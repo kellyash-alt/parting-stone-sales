@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parting Stone · Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --black: #000;
+      --white: #fff;
+      --text: #4b4b4b;
+      --muted: #888;
+      --border: #e0e0e0;
+      --surface: #f8f8f8;
+      --nav-h: 60px;
+      --green: #2a7a3b;
+      --red: #c0392b;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Barlow', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.55;
+      color: var(--text);
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    ul { list-style: none; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ── NAV ── */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: var(--black);
+    }
+    .site-nav {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo img { height: 36px; }
+    .nav-links { display: flex; height: var(--nav-h); }
+    .nav-links li { display: flex; }
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      padding: 0 1.2rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #555;
+      border-left: 1px solid #1c1c1c;
+      transition: color 0.12s, background 0.12s;
+    }
+    .nav-links li:last-child a { border-right: 1px solid #1c1c1c; }
+    .nav-links a:hover { color: var(--white); background: #141414; }
+    .nav-links a.active { color: var(--white); }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      background: var(--black);
+      background-image: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 39px,
+        #1a1a1a 39px,
+        #1a1a1a 40px
+      );
+      border-bottom: 1px solid #222;
+      padding: 2.5rem 2rem;
+    }
+    .page-header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .page-header h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--white);
+      line-height: 1;
+      animation: riseIn 0.5s ease both;
+    }
+    .page-header-meta {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #555;
+      animation: riseIn 0.5s 0.1s ease both;
+    }
+
+    /* ── LAYOUT ── */
+    .main-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 5rem;
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.6rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ── KPI COMMAND STRIP ── */
+    .kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+      animation: riseIn 0.5s 0.1s ease both;
+    }
+    .kpi-cell {
+      padding: 1.5rem 1.25rem;
+      border-right: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi-cell:last-child { border-right: none; }
+    .kpi-cell::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 2px;
+      background: var(--black);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.22s ease;
+    }
+    .kpi-cell:hover::after { transform: scaleX(1); }
+    .kpi-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .kpi-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--black);
+      line-height: 1;
+    }
+    .kpi-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+
+    /* ── CHARTS ROW ── */
+    .charts-row {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      border: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+      animation: riseIn 0.5s 0.2s ease both;
+    }
+    .chart-panel {
+      padding: 1.75rem;
+      border-right: 1px solid var(--border);
+    }
+    .chart-panel:last-child { border-right: none; }
+    .chart-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--black);
+      margin-bottom: 1.25rem;
+    }
+    .chart-wrap {
+      position: relative;
+      height: 220px;
+    }
+    .gauge-wrap {
+      position: relative;
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .gauge-center {
+      position: absolute;
+      text-align: center;
+      pointer-events: none;
+    }
+    .gauge-center-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.6rem;
+      font-weight: 800;
+      color: var(--black);
+      line-height: 1;
+    }
+    .gauge-center-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    /* ── ACTIVITY ROW ── */
+    .activity-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+      animation: riseIn 0.5s 0.3s ease both;
+    }
+    .activity-panel {
+      padding: 1.75rem;
+      border-right: 1px solid var(--border);
+    }
+    .activity-panel:last-child { border-right: none; }
+
+    /* ── ACTIVITY TOTALS ── */
+    .activity-totals {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      margin-bottom: 1.5rem;
+    }
+    .act-cell {
+      padding: 1rem 0;
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+    .act-cell:last-child { border-right: none; }
+    .act-number {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--black);
+      line-height: 1;
+    }
+    .act-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.2rem;
+    }
+    .act-delta {
+      font-size: 0.72rem;
+      font-weight: 600;
+      margin-top: 0.25rem;
+    }
+    .delta-up { color: var(--green); }
+    .delta-down { color: var(--red); }
+
+    /* ── REP TABLE ── */
+    .rep-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    .rep-table thead tr {
+      background: var(--black);
+      color: var(--white);
+    }
+    .rep-table thead th {
+      padding: 0.65rem 0.875rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      text-align: left;
+    }
+    .rep-table tbody tr { border-bottom: 1px solid var(--border); }
+    .rep-table tbody tr:last-child { border-bottom: none; }
+    .rep-table tbody td { padding: 0.85rem 0.875rem; }
+    .rep-table tbody td:first-child {
+      font-weight: 600;
+      color: var(--black);
+      border-right: 1px solid var(--border);
+    }
+    .rep-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .rep-bar-track {
+      flex: 1;
+      height: 4px;
+      background: var(--border);
+    }
+    .rep-bar-fill {
+      height: 100%;
+      background: var(--black);
+    }
+    .rep-bar-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--black);
+      min-width: 24px;
+      text-align: right;
+    }
+
+    /* ── FORM METRICS ── */
+    .form-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .form-metric {
+      padding: 1rem 0;
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+    .form-metric:last-child { border-right: none; }
+    .form-metric-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--black);
+      line-height: 1;
+    }
+    .form-metric-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+    .form-conv-bar {
+      margin-top: 0.75rem;
+      height: 3px;
+      background: var(--border);
+    }
+    .form-conv-fill { height: 100%; background: var(--black); }
+
+    /* ── GROWTH FUNNEL ── */
+    .growth-row {
+      border: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+      animation: riseIn 0.5s 0.35s ease both;
+    }
+    .growth-inner { padding: 1.75rem; }
+    .growth-track-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 1rem;
+    }
+    .growth-track-item {
+      padding: 1.25rem;
+      border-right: 1px solid var(--border);
+    }
+    .growth-track-item:last-child { border-right: none; }
+    .growth-track-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+    .growth-track-bar { height: 6px; background: var(--border); margin-bottom: 0.5rem; }
+    .growth-track-fill { height: 100%; background: var(--black); }
+    .growth-track-nums {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .growth-track-nums strong {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--black);
+    }
+
+    /* ── METRICS STRIP ── */
+    .metrics-strip {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+      animation: riseIn 0.5s 0.45s ease both;
+    }
+    .metric-block {
+      padding: 1.75rem;
+      border-right: 1px solid var(--border);
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .metric-block:last-child { border-right: none; }
+    .metric-ring-wrap { flex-shrink: 0; }
+    .metric-ring-wrap svg { display: block; }
+    .metric-detail { flex: 1; }
+    .metric-block-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.4rem;
+    }
+    .metric-block-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--black);
+      line-height: 1;
+    }
+    .metric-block-sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.35rem;
+      line-height: 1.4;
+    }
+
+    /* ── NEW PARTNER DASHBOARD ── */
+    .new-partner-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+      animation: riseIn 0.5s 0.15s ease both;
+    }
+    .np-panel {
+      padding: 1.75rem;
+      border-right: 1px solid var(--border);
+    }
+    .np-panel:last-child { border-right: none; }
+
+    /* stat bar at top of closed deals panel */
+    .np-totals {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin-bottom: 1.25rem;
+    }
+    .np-total-cell {
+      padding: 1rem 0;
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+    .np-total-cell:last-child { border-right: none; }
+    .np-total-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--black);
+      line-height: 1;
+    }
+    .np-total-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.2rem;
+    }
+
+    /* recent deals list */
+    .deals-list { margin-top: 1.25rem; }
+    .deals-list-header {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 0.75rem;
+      padding: 0.45rem 0.6rem;
+      background: var(--black);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--white);
+    }
+    .deal-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 0.75rem;
+      padding: 0.6rem 0.6rem;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.82rem;
+      align-items: center;
+    }
+    .deal-row:last-child { border-bottom: none; }
+    .deal-name { font-weight: 600; color: var(--black); }
+    .deal-location { color: var(--muted); font-size: 0.78rem; }
+    .deal-loc-cell { color: var(--muted); font-size: 0.78rem; text-align: right; white-space: nowrap; }
+    .deal-date-cell { color: var(--muted); font-size: 0.78rem; text-align: right; white-space: nowrap; }
+
+    /* conversion comparison panel */
+    .conv-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      margin-bottom: 1.5rem;
+    }
+    .conv-compare-cell {
+      padding: 1rem 0;
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+    .conv-compare-cell:last-child { border-right: none; }
+    .conv-compare-period {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+    .conv-compare-nums {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--black);
+      line-height: 1.2;
+    }
+    .conv-compare-rate {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--black);
+      line-height: 1;
+      margin-top: 0.25rem;
+    }
+
+    /* goal indicator */
+    .goal-indicator {
+      margin-top: 1.25rem;
+      padding: 1rem;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .goal-indicator-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.6rem;
+    }
+    .goal-indicator-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .goal-indicator-pct {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--black);
+    }
+    .goal-track {
+      position: relative;
+      height: 8px;
+      background: var(--border);
+    }
+    .goal-fill {
+      height: 100%;
+      background: var(--black);
+    }
+    .goal-marker {
+      position: absolute;
+      top: -4px;
+      width: 2px;
+      height: 16px;
+      background: var(--red);
+    }
+    .goal-marker-label {
+      position: absolute;
+      top: 16px;
+      transform: translateX(-50%);
+      font-size: 0.6rem;
+      font-weight: 700;
+      color: var(--red);
+      white-space: nowrap;
+    }
+    .goal-legend {
+      display: flex;
+      gap: 1.25rem;
+      margin-top: 1rem;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+    .goal-legend-item { display: flex; align-items: center; gap: 0.4rem; }
+    .goal-legend-swatch {
+      width: 10px; height: 10px;
+      flex-shrink: 0;
+    }
+
+    /* ── DORMANT STRIP ── */
+    .dormant-strip {
+      border: 1px solid var(--border);
+      animation: riseIn 0.5s 0.5s ease both;
+      margin-bottom: 2.5rem;
+    }
+    .dormant-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .dormant-cell {
+      padding: 1.5rem 1.25rem;
+      border-right: 1px solid var(--border);
+    }
+    .dormant-cell:last-child { border-right: none; }
+    .dormant-progress {
+      height: 5px;
+      background: var(--border);
+    }
+    .dormant-progress-fill { height: 100%; background: var(--black); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="site-header">
+  <nav class="site-nav">
+    <a class="nav-logo" href="index.html">
+      <img src="Parting-Stone-logo-FINAL.png" alt="Parting Stone" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="goals.html">Goals</a></li>
+      <li><a href="dashboard.html" class="active">Dashboard</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- PAGE HEADER -->
+<section class="page-header">
+  <div class="page-header-inner">
+    <h1>Sales Dashboard</h1>
+    <span class="page-header-meta">Updated March 2026</span>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main-content">
+
+  <!-- KPI COMMAND STRIP -->
+  <div class="section-label">Key Performance Indicators</div>
+  <div class="kpi-strip">
+    <div class="kpi-cell">
+      <div class="kpi-label">Active Partners</div>
+      <div class="kpi-value">347</div>
+      <div class="kpi-sub">funeral homes &amp; crematories</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">Partner Growth</div>
+      <div class="kpi-value">18<span style="font-size:1.4rem">%</span></div>
+      <div class="kpi-sub">year-over-year</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">Close Rate</div>
+      <div class="kpi-value">62<span style="font-size:1.4rem">%</span></div>
+      <div class="kpi-sub">qualified leads closed</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">Days to First Sale</div>
+      <div class="kpi-value">24</div>
+      <div class="kpi-sub">avg. from first contact</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-label">Reorder Rate</div>
+      <div class="kpi-value">68<span style="font-size:1.4rem">%</span></div>
+      <div class="kpi-sub">reorder within 90 days</div>
+    </div>
+  </div>
+
+  <!-- NEW PARTNER DASHBOARD -->
+  <div class="section-label">New Partner Dashboard</div>
+  <div class="new-partner-row">
+
+    <!-- LEFT: CLOSED DEALS FROM B2B PIPELINE -->
+    <div class="np-panel">
+      <div class="chart-title">Closed Deals — B2B Pipeline</div>
+
+      <div class="np-totals">
+        <div class="np-total-cell">
+          <div class="np-total-value">8</div>
+          <div class="np-total-label">Closed This Month</div>
+        </div>
+        <div class="np-total-cell">
+          <div class="np-total-value">30</div>
+          <div class="np-total-label">Closed 2026 YTD</div>
+        </div>
+      </div>
+
+      <div class="chart-wrap" style="height:160px;margin-bottom:1.25rem">
+        <canvas id="closedDealsChart"></canvas>
+      </div>
+
+      <div class="deals-list">
+        <div class="deals-list-header">
+          <span>Partner</span>
+          <span>Location</span>
+          <span>Closed</span>
+        </div>
+        <div class="deal-row">
+          <div><div class="deal-name">Riverside Memorial Chapel</div></div>
+          <div class="deal-loc-cell">Portland, OR</div>
+          <div class="deal-date-cell">Mar 11</div>
+        </div>
+        <div class="deal-row">
+          <div><div class="deal-name">Greenwood Cremation Services</div></div>
+          <div class="deal-loc-cell">Austin, TX</div>
+          <div class="deal-date-cell">Mar 9</div>
+        </div>
+        <div class="deal-row">
+          <div><div class="deal-name">Harbor Light Funeral Home</div></div>
+          <div class="deal-loc-cell">Annapolis, MD</div>
+          <div class="deal-date-cell">Mar 7</div>
+        </div>
+        <div class="deal-row">
+          <div><div class="deal-name">Summit View Chapel</div></div>
+          <div class="deal-loc-cell">Denver, CO</div>
+          <div class="deal-date-cell">Mar 5</div>
+        </div>
+        <div class="deal-row">
+          <div><div class="deal-name">Lakeshore Funeral &amp; Cremation</div></div>
+          <div class="deal-loc-cell">Chicago, IL</div>
+          <div class="deal-date-cell">Mar 3</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: FORM SUBMISSIONS VS CLOSED DEALS -->
+    <div class="np-panel">
+      <div class="chart-title">Form Submissions vs Closed Deals</div>
+
+      <div class="conv-compare">
+        <div class="conv-compare-cell">
+          <div class="conv-compare-period">This Month</div>
+          <div class="conv-compare-nums">10 submissions → 8 closed</div>
+          <div class="conv-compare-rate">80%</div>
+        </div>
+        <div class="conv-compare-cell">
+          <div class="conv-compare-period">2026 YTD</div>
+          <div class="conv-compare-nums">30 submissions → 22 closed</div>
+          <div class="conv-compare-rate">73%</div>
+        </div>
+      </div>
+
+      <div class="chart-wrap" style="height:180px;margin-bottom:1.25rem">
+        <canvas id="submissionsVsClosedChart"></canvas>
+      </div>
+
+      <div class="goal-indicator">
+        <div class="goal-indicator-header">
+          <span class="goal-indicator-label">Close Rate vs 75% Target</span>
+          <span class="goal-indicator-pct">Current: 80% (this month) · 73% YTD</span>
+        </div>
+        <div class="goal-track">
+          <!-- This month fill: 80% -->
+          <div class="goal-fill" style="width:80%"></div>
+          <!-- Target marker at 75% -->
+          <div class="goal-marker" style="left:75%">
+            <div class="goal-marker-label">75% target</div>
+          </div>
+        </div>
+        <div class="goal-legend">
+          <div class="goal-legend-item">
+            <div class="goal-legend-swatch" style="background:var(--black)"></div>
+            Current close rate (80% this mo.)
+          </div>
+          <div class="goal-legend-item">
+            <div class="goal-legend-swatch" style="background:var(--red)"></div>
+            75% goal threshold
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CHARTS ROW -->
+  <div class="section-label">Orders &amp; Conversion</div>
+  <div class="charts-row">
+    <div class="chart-panel">
+      <div class="chart-title">Orders by Location — 2024 vs 2025</div>
+      <div class="chart-wrap">
+        <canvas id="ordersChart"></canvas>
+      </div>
+    </div>
+    <div class="chart-panel">
+      <div class="chart-title">Form → Partner Conversion Rate</div>
+      <div class="gauge-wrap">
+        <canvas id="convChart" width="220" height="220"></canvas>
+        <div class="gauge-center">
+          <div class="gauge-center-value">62%</div>
+          <div class="gauge-center-label">Close Rate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ACTIVITY DASHBOARD -->
+  <div class="section-label">Activity Dashboard</div>
+  <div class="activity-row">
+
+    <div class="activity-panel">
+      <div class="chart-title">Team Activity — March 2026</div>
+      <div class="activity-totals">
+        <div class="act-cell">
+          <div class="act-label">Calls</div>
+          <div class="act-number">130</div>
+          <div class="act-delta delta-up">+14 vs last mo.</div>
+        </div>
+        <div class="act-cell">
+          <div class="act-label">Emails</div>
+          <div class="act-number">72</div>
+          <div class="act-delta delta-up">+5 vs last mo.</div>
+        </div>
+        <div class="act-cell">
+          <div class="act-label">Meetings</div>
+          <div class="act-number">12</div>
+          <div class="act-delta delta-down">−1 vs last mo.</div>
+        </div>
+      </div>
+      <table class="rep-table">
+        <thead>
+          <tr>
+            <th>Rep</th>
+            <th>Calls</th>
+            <th>Emails</th>
+            <th>Meetings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Carla Harvey</td>
+            <td>
+              <div class="rep-bar-row">
+                <div class="rep-bar-track"><div class="rep-bar-fill" style="width:78%"></div></div>
+                <span class="rep-bar-num">78</span>
+              </div>
+            </td>
+            <td>
+              <div class="rep-bar-row">
+                <div class="rep-bar-track"><div class="rep-bar-fill" style="width:63%"></div></div>
+                <span class="rep-bar-num">45</span>
+              </div>
+            </td>
+            <td>
+              <div class="rep-bar-row">
+                <div class="rep-bar-track"><div class="rep-bar-fill" style="width:58%"></div></div>
+                <span class="rep-bar-num">7</span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>Kelly Ash</td>
+            <td>
+              <div class="rep-bar-row">
+                <div class="rep-bar-track"><div class="rep-bar-fill" style="width:52%"></div></div>
+                <span class="rep-bar-num">52</span>
+              </div>
+            </td>
+            <td>
+              <div class="rep-bar-row">
+                <div class="rep-bar-track"><div class="rep-bar-fill" style="width:38%"></div></div>
+                <span class="rep-bar-num">27</span>
+              </div>
+            </td>
+            <td>
+              <div class="rep-bar-row">
+                <div class="rep-bar-track"><div class="rep-bar-fill" style="width:42%"></div></div>
+                <span class="rep-bar-num">5</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="activity-panel">
+      <div class="chart-title">Form Submissions</div>
+
+      <div style="margin-bottom:1.5rem">
+        <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.13em;text-transform:uppercase;color:var(--muted);padding-bottom:0.5rem;border-bottom:1px solid var(--border);margin-bottom:0.75rem">This Month</div>
+        <div class="form-metrics">
+          <div class="form-metric">
+            <div class="form-metric-value">97</div>
+            <div class="form-metric-label">Views</div>
+          </div>
+          <div class="form-metric">
+            <div class="form-metric-value">10.31%</div>
+            <div class="form-metric-label">Conv. Rate</div>
+          </div>
+          <div class="form-metric">
+            <div class="form-metric-value">10</div>
+            <div class="form-metric-label">Submissions</div>
+          </div>
+        </div>
+        <div class="form-conv-bar"><div class="form-conv-fill" style="width:10.31%"></div></div>
+      </div>
+
+      <div>
+        <div style="font-size:0.65rem;font-weight:700;letter-spacing:0.13em;text-transform:uppercase;color:var(--muted);padding-bottom:0.5rem;border-bottom:1px solid var(--border);margin-bottom:0.75rem">2026 YTD</div>
+        <div class="form-metrics">
+          <div class="form-metric">
+            <div class="form-metric-value">642</div>
+            <div class="form-metric-label">Views</div>
+          </div>
+          <div class="form-metric">
+            <div class="form-metric-value">4.67%</div>
+            <div class="form-metric-label">Conv. Rate</div>
+          </div>
+          <div class="form-metric">
+            <div class="form-metric-value">30</div>
+            <div class="form-metric-label">Submissions</div>
+          </div>
+        </div>
+        <div class="form-conv-bar"><div class="form-conv-fill" style="width:4.67%"></div></div>
+      </div>
+
+      <div style="margin-top:1.5rem;padding:1rem;border:1px solid var(--border);background:var(--surface)">
+        <div style="font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--black);margin-bottom:0.3rem">Trend Note</div>
+        <div style="font-size:0.82rem;color:var(--muted);line-height:1.5">March conversion (10.31%) is running <strong style="color:var(--green)">2.2× above</strong> YTD average (4.67%). High-intent inquiry volume from Q1 outreach push.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PARTNER GROWTH FUNNEL -->
+  <div class="section-label">Active Partner Growth</div>
+  <div class="growth-row">
+    <div class="growth-inner">
+      <div class="chart-title">Partner Pipeline — 2026 YTD</div>
+      <div class="growth-track-list">
+        <div class="growth-track-item">
+          <div class="growth-track-label">Leads Contacted</div>
+          <div class="growth-track-bar"><div class="growth-track-fill" style="width:100%"></div></div>
+          <div class="growth-track-nums"><span>Total</span><strong>56</strong></div>
+        </div>
+        <div class="growth-track-item">
+          <div class="growth-track-label">Proposals Sent</div>
+          <div class="growth-track-bar"><div class="growth-track-fill" style="width:62%"></div></div>
+          <div class="growth-track-nums"><span>of contacted</span><strong>35</strong></div>
+        </div>
+        <div class="growth-track-item">
+          <div class="growth-track-label">New Partners Signed</div>
+          <div class="growth-track-bar"><div class="growth-track-fill" style="width:31%"></div></div>
+          <div class="growth-track-nums"><span>of contacted</span><strong>17</strong></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REORDER RATE + TIME TO FIRST SALE -->
+  <div class="section-label">Partner Health Metrics</div>
+  <div class="metrics-strip">
+    <div class="metric-block">
+      <div class="metric-ring-wrap">
+        <svg width="90" height="90" viewBox="0 0 90 90">
+          <circle cx="45" cy="45" r="36" fill="none" stroke="#e0e0e0" stroke-width="8"/>
+          <circle cx="45" cy="45" r="36" fill="none" stroke="#000" stroke-width="8"
+            stroke-dasharray="226.2" stroke-dashoffset="72.4"
+            stroke-linecap="butt" transform="rotate(-90 45 45)"/>
+        </svg>
+      </div>
+      <div class="metric-detail">
+        <div class="metric-block-title">Reorder Rate</div>
+        <div class="metric-block-value">68%</div>
+        <div class="metric-block-sub">active partners placed a<br>repeat order within 90 days</div>
+      </div>
+    </div>
+    <div class="metric-block">
+      <div class="metric-ring-wrap">
+        <svg width="90" height="90" viewBox="0 0 90 90">
+          <circle cx="45" cy="45" r="36" fill="none" stroke="#e0e0e0" stroke-width="8"/>
+          <circle cx="45" cy="45" r="36" fill="none" stroke="#000" stroke-width="8"
+            stroke-dasharray="226.2" stroke-dashoffset="181"
+            stroke-linecap="butt" transform="rotate(-90 45 45)"/>
+          <text x="45" y="50" text-anchor="middle" font-family="'Barlow Condensed',sans-serif" font-size="16" font-weight="800" fill="#000">24d</text>
+        </svg>
+      </div>
+      <div class="metric-detail">
+        <div class="metric-block-title">Time to First Sale</div>
+        <div class="metric-block-value">24<span style="font-size:1.4rem;font-weight:600"> days</span></div>
+        <div class="metric-block-sub">avg. days from first contact<br>to confirmed first order</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DORMANT PARTNER REACTIVATION -->
+  <div class="section-label">Dormant Partner Reactivation</div>
+  <div class="dormant-strip">
+    <div class="dormant-grid">
+      <div class="dormant-cell">
+        <div class="kpi-label">Dormant Partners</div>
+        <div class="kpi-value" style="font-size:2rem">41</div>
+        <div class="kpi-sub">no order in 90+ days</div>
+      </div>
+      <div class="dormant-cell">
+        <div class="kpi-label">Reactivation Target</div>
+        <div class="kpi-value" style="font-size:2rem">15</div>
+        <div class="kpi-sub">goal for Q1 2026</div>
+      </div>
+      <div class="dormant-cell">
+        <div class="kpi-label">Reactivated This Qtr</div>
+        <div class="kpi-value" style="font-size:2rem;color:var(--green)">9</div>
+        <div class="kpi-sub">60% of Q1 target reached</div>
+      </div>
+      <div class="dormant-cell">
+        <div class="kpi-label">Avg. Win-Back Time</div>
+        <div class="kpi-value" style="font-size:2rem">18</div>
+        <div class="kpi-sub">days from outreach to order</div>
+      </div>
+    </div>
+    <div class="dormant-progress"><div class="dormant-progress-fill" style="width:60%"></div></div>
+  </div>
+
+</main>
+
+<script>
+  // ── CLOSED DEALS BY MONTH BAR CHART ──
+  const closedDealsCtx = document.getElementById('closedDealsChart').getContext('2d');
+  new Chart(closedDealsCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar'],
+      datasets: [{
+        label: 'Closed Deals',
+        data: [9, 13, 8],
+        backgroundColor: '#000000',
+        borderWidth: 0,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#000',
+          titleFont: { family: "'Barlow Condensed', sans-serif", size: 13, weight: '700' },
+          bodyFont: { family: "'Barlow', sans-serif", size: 12 },
+          callbacks: {
+            label: ctx => ` ${ctx.parsed.y} deals closed`
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font: { family: "'Barlow', sans-serif", size: 12, weight: '600' }, color: '#4b4b4b' },
+          border: { color: '#e0e0e0' }
+        },
+        y: {
+          grid: { color: '#f0f0f0' },
+          ticks: { font: { family: "'Barlow', sans-serif", size: 11 }, color: '#888', stepSize: 4 },
+          border: { dash: [3,3], color: 'transparent' },
+          suggestedMax: 18,
+        }
+      },
+      barPercentage: 0.45,
+      categoryPercentage: 0.6,
+    }
+  });
+
+  // ── SUBMISSIONS VS CLOSED LINE CHART ──
+  const svcCtx = document.getElementById('submissionsVsClosedChart').getContext('2d');
+  new Chart(svcCtx, {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar'],
+      datasets: [
+        {
+          label: 'Form Submissions',
+          data: [9, 11, 10],
+          borderColor: '#d5d5d5',
+          backgroundColor: 'transparent',
+          borderWidth: 2,
+          pointBackgroundColor: '#d5d5d5',
+          pointRadius: 4,
+          tension: 0.3,
+        },
+        {
+          label: 'Closed Deals',
+          data: [9, 13, 8],
+          borderColor: '#000000',
+          backgroundColor: 'transparent',
+          borderWidth: 2.5,
+          pointBackgroundColor: '#000000',
+          pointRadius: 4,
+          tension: 0.3,
+        },
+        {
+          label: '75% Goal',
+          data: [null, null, null],
+          borderColor: '#c0392b',
+          borderWidth: 1.5,
+          borderDash: [5, 4],
+          pointRadius: 0,
+          tension: 0,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+          align: 'end',
+          labels: {
+            font: { family: "'Barlow', sans-serif", size: 11, weight: '600' },
+            color: '#4b4b4b',
+            boxWidth: 10,
+            boxHeight: 2,
+            padding: 10,
+          }
+        },
+        tooltip: {
+          backgroundColor: '#000',
+          titleFont: { family: "'Barlow Condensed', sans-serif", size: 13, weight: '700' },
+          bodyFont: { family: "'Barlow', sans-serif", size: 12 },
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font: { family: "'Barlow', sans-serif", size: 11 }, color: '#888' },
+          border: { color: '#e0e0e0' }
+        },
+        y: {
+          grid: { color: '#f0f0f0' },
+          ticks: { font: { family: "'Barlow', sans-serif", size: 11 }, color: '#888', stepSize: 4 },
+          border: { dash: [3,3], color: 'transparent' },
+          suggestedMin: 0,
+          suggestedMax: 18,
+        }
+      }
+    }
+  });
+
+  // ── ORDERS BY LOCATION BAR CHART ──
+  const ordersCtx = document.getElementById('ordersChart').getContext('2d');
+  new Chart(ordersCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Northeast', 'Southeast', 'Midwest', 'Southwest', 'West', 'Pacific'],
+      datasets: [
+        {
+          label: '2024',
+          data: [42, 38, 55, 29, 33, 27],
+          backgroundColor: '#d5d5d5',
+          borderWidth: 0,
+        },
+        {
+          label: '2025',
+          data: [58, 47, 71, 38, 44, 36],
+          backgroundColor: '#000000',
+          borderWidth: 0,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+          align: 'end',
+          labels: {
+            font: { family: "'Barlow', sans-serif", size: 11, weight: '600' },
+            color: '#4b4b4b',
+            boxWidth: 10,
+            boxHeight: 10,
+            padding: 12,
+          }
+        },
+        tooltip: {
+          backgroundColor: '#000',
+          titleFont: { family: "'Barlow Condensed', sans-serif", size: 13, weight: '700' },
+          bodyFont: { family: "'Barlow', sans-serif", size: 12 },
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font: { family: "'Barlow', sans-serif", size: 11 }, color: '#888' },
+          border: { color: '#e0e0e0' }
+        },
+        y: {
+          grid: { color: '#f0f0f0' },
+          ticks: { font: { family: "'Barlow', sans-serif", size: 11 }, color: '#888' },
+          border: { dash: [3,3], color: 'transparent' }
+        }
+      },
+      barPercentage: 0.65,
+      categoryPercentage: 0.75,
+    }
+  });
+
+  // ── CONVERSION RATE DOUGHNUT ──
+  const convCtx = document.getElementById('convChart').getContext('2d');
+  new Chart(convCtx, {
+    type: 'doughnut',
+    data: {
+      datasets: [{
+        data: [62, 38],
+        backgroundColor: ['#000000', '#e0e0e0'],
+        borderWidth: 0,
+        hoverOffset: 0,
+      }]
+    },
+    options: {
+      responsive: false,
+      cutout: '72%',
+      plugins: {
+        legend: { display: false },
+        tooltip: { enabled: false },
+      },
+      animation: { animateRotate: true, duration: 900 }
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Goal Tracker · Parting Stone Sales</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #000;
+      --white: #fff;
+      --text: #4b4b4b;
+      --muted: #888;
+      --border: #e0e0e0;
+      --surface: #f8f8f8;
+      --green: #2d6a4f;
+      --green-bg: #edf5f1;
+      --nav-h: 60px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Barlow', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.55;
+      color: var(--text);
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    ul { list-style: none; }
+
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ── NAV ── */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: var(--black);
+    }
+    .site-nav {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo img { height: 36px; }
+    .nav-links { display: flex; height: var(--nav-h); }
+    .nav-links li { display: flex; }
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      padding: 0 1.2rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #555;
+      border-left: 1px solid #1c1c1c;
+      transition: color 0.12s, background 0.12s;
+    }
+    .nav-links li:last-child a { border-right: 1px solid #1c1c1c; }
+    .nav-links a:hover { color: var(--white); background: #141414; }
+    .nav-links a.active { color: var(--white); }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      background: var(--black);
+      background-image: repeating-linear-gradient(
+        0deg, transparent, transparent 47px,
+        rgba(255,255,255,0.022) 47px, rgba(255,255,255,0.022) 48px
+      );
+      padding: 3rem 2rem;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    .page-header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: baseline;
+      gap: 2rem;
+    }
+    .eyebrow {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #3a3a3a;
+    }
+    .page-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      line-height: 1;
+      animation: riseIn 0.6s 0.05s both;
+    }
+
+    /* ── MAIN ── */
+    .page-body {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 4rem 2rem 5rem;
+    }
+
+    /* ── FORM CARD ── */
+    .form-wrap {
+      border: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+    }
+    .form-header {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+    }
+    .form-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: var(--black);
+    }
+    .form-sub {
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--muted);
+    }
+    .form-body { padding: 2rem; }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    .field { display: flex; flex-direction: column; gap: 0.45rem; }
+    .field.full { grid-column: 1 / -1; }
+    label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    input, select {
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: var(--black);
+      background: var(--white);
+      border: 1px solid var(--border);
+      padding: 0.7rem 0.9rem;
+      width: 100%;
+      transition: border-color 0.14s;
+      appearance: none;
+      outline: none;
+    }
+    input:focus, select:focus { border-color: var(--black); }
+    input::placeholder { color: #ccc; }
+    .form-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 1.75rem 0;
+    }
+    .field-group-label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1.25rem;
+      grid-column: 1 / -1;
+    }
+    .form-actions {
+      padding: 1.25rem 2rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+    .btn {
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.8rem 1.75rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.14s;
+    }
+    .btn-black {
+      background: var(--black);
+      color: var(--white);
+      border-color: var(--black);
+    }
+    .btn-black:hover { background: #222; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border-color: var(--border);
+    }
+    .btn-ghost:hover { color: var(--black); border-color: var(--black); }
+
+    /* ── TRACKER OUTPUT ── */
+    #tracker { display: none; }
+    .tracker-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .tracker-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--black);
+    }
+    .tracker-badge {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.7rem;
+    }
+
+    /* ── KPI ROW ── */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1px solid var(--border);
+      border-right: none;
+      margin-bottom: 2.5rem;
+    }
+    .kpi-cell {
+      padding: 1.5rem 1.5rem 1.25rem;
+      border-right: 1px solid var(--border);
+    }
+    .kpi-val {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.75rem;
+      font-weight: 700;
+      color: var(--black);
+      line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .kpi-label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.4rem;
+    }
+
+    /* ── PROGRESS BARS ── */
+    .progress-wrap {
+      border: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+    .progress-wrap-header {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.005em;
+      color: var(--black);
+    }
+    .progress-list { padding: 0.5rem 0; }
+    .prog-item {
+      padding: 1.1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .prog-item:last-child { border-bottom: none; }
+    .prog-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.6rem;
+    }
+    .prog-name {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--black);
+    }
+    .prog-nums {
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--muted);
+    }
+    .prog-track {
+      height: 5px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .prog-fill {
+      height: 100%;
+      background: var(--black);
+      transition: width 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .prog-pct {
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-top: 0.35rem;
+      text-align: right;
+    }
+
+    /* ── MILESTONES ── */
+    .milestones {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border: 1px solid var(--border);
+      border-right: none;
+      margin-bottom: 2rem;
+    }
+    .ms-cell {
+      padding: 1.1rem 1rem 1rem;
+      border-right: 1px solid var(--border);
+      text-align: center;
+      transition: background 0.14s;
+    }
+    .ms-cell.achieved { background: var(--green-bg); }
+    .ms-icon { font-size: 1.4rem; display: block; margin-bottom: 0.3rem; }
+    .ms-label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .ms-cell.achieved .ms-label { color: var(--green); }
+
+    /* ── ENCOURAGEMENT ── */
+    .encourage {
+      background: var(--black);
+      padding: 2rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .enc-icon { font-size: 1.75rem; flex-shrink: 0; }
+    .enc-text {
+      font-size: 0.95rem;
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(255,255,255,0.6);
+      line-height: 1.65;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      border-top: 1px solid #141414;
+      padding: 1.5rem 2rem;
+    }
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-copy {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #2e2e2e;
+    }
+    .footer-note { font-size: 0.68rem; color: #2a2a2a; }
+
+    @media (max-width: 640px) {
+      .nav-links a { padding: 0 0.75rem; font-size: 0.65rem; letter-spacing: 0.08em; }
+      .page-body { padding: 2.5rem 1.25rem 4rem; }
+      .form-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: 1; }
+      .kpi-row { grid-template-columns: repeat(2, 1fr); }
+      .milestones { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <nav class="site-nav">
+      <a class="nav-logo" href="index.html">
+        <img src="Parting-Stone-logo-FINAL.png" alt="Parting Stone">
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="resources.html">Resources</a></li>
+        <li><a href="goals.html" class="active">Goal Tracker</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="page-header">
+    <div class="page-header-inner">
+      <span class="eyebrow">Sales Team</span>
+      <h1 class="page-title">Goal Tracker</h1>
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- INPUT FORM -->
+    <div class="form-wrap">
+      <div class="form-header">
+        <span class="form-title">Set Monthly Targets</span>
+        <span class="form-sub">Enter goals + actuals, then hit Update</span>
+      </div>
+      <form id="goal-form" onsubmit="updateTracker(event)">
+        <div class="form-body">
+          <div class="form-grid">
+            <div class="field">
+              <label for="rep-name">Your Name</label>
+              <input type="text" id="rep-name" placeholder="e.g. Jordan M." />
+            </div>
+            <div class="field">
+              <label for="month-select">Month</label>
+              <select id="month-select">
+                <option>January</option><option>February</option>
+                <option selected>March</option><option>April</option>
+                <option>May</option><option>June</option>
+                <option>July</option><option>August</option>
+                <option>September</option><option>October</option>
+                <option>November</option><option>December</option>
+              </select>
+            </div>
+            <div class="field-group-label">Goals &amp; Actuals</div>
+            <div class="field">
+              <label for="goal-calls">Calls Goal</label>
+              <input type="number" id="goal-calls" min="0" placeholder="80" />
+            </div>
+            <div class="field">
+              <label for="actual-calls">Calls Completed</label>
+              <input type="number" id="actual-calls" min="0" placeholder="52" />
+            </div>
+            <div class="field">
+              <label for="goal-demos">Demos Goal</label>
+              <input type="number" id="goal-demos" min="0" placeholder="12" />
+            </div>
+            <div class="field">
+              <label for="actual-demos">Demos Completed</label>
+              <input type="number" id="actual-demos" min="0" placeholder="7" />
+            </div>
+            <div class="field">
+              <label for="goal-closes">New Partners Goal</label>
+              <input type="number" id="goal-closes" min="0" placeholder="4" />
+            </div>
+            <div class="field">
+              <label for="actual-closes">New Partners Signed</label>
+              <input type="number" id="actual-closes" min="0" placeholder="2" />
+            </div>
+            <div class="field">
+              <label for="goal-revenue">Revenue Goal ($)</label>
+              <input type="number" id="goal-revenue" min="0" placeholder="15000" />
+            </div>
+            <div class="field">
+              <label for="actual-revenue">Revenue to Date ($)</label>
+              <input type="number" id="actual-revenue" min="0" placeholder="8400" />
+            </div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-black">Update Tracker</button>
+          <button type="button" class="btn btn-ghost" onclick="resetForm()">Reset</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- TRACKER OUTPUT -->
+    <div id="tracker">
+
+      <div class="tracker-header">
+        <span class="tracker-name" id="tracker-name">Your Progress</span>
+        <span class="tracker-badge" id="tracker-badge">March 2026</span>
+      </div>
+
+      <!-- KPI ROW -->
+      <div class="kpi-row">
+        <div class="kpi-cell">
+          <div class="kpi-val" id="kpi-calls">—</div>
+          <div class="kpi-label">Calls</div>
+        </div>
+        <div class="kpi-cell">
+          <div class="kpi-val" id="kpi-demos">—</div>
+          <div class="kpi-label">Demos</div>
+        </div>
+        <div class="kpi-cell">
+          <div class="kpi-val" id="kpi-closes">—</div>
+          <div class="kpi-label">Partners</div>
+        </div>
+        <div class="kpi-cell">
+          <div class="kpi-val" id="kpi-revenue">—</div>
+          <div class="kpi-label">Revenue</div>
+        </div>
+      </div>
+
+      <!-- PROGRESS BARS -->
+      <div class="progress-wrap">
+        <div class="progress-wrap-header">Progress Breakdown</div>
+        <div class="progress-list">
+          <div class="prog-item">
+            <div class="prog-row">
+              <span class="prog-name">Calls Made</span>
+              <span class="prog-nums" id="num-calls">0 / 0</span>
+            </div>
+            <div class="prog-track"><div class="prog-fill" id="bar-calls" style="width:0%"></div></div>
+            <div class="prog-pct" id="pct-calls">0% of goal</div>
+          </div>
+          <div class="prog-item">
+            <div class="prog-row">
+              <span class="prog-name">Demos</span>
+              <span class="prog-nums" id="num-demos">0 / 0</span>
+            </div>
+            <div class="prog-track"><div class="prog-fill" id="bar-demos" style="width:0%"></div></div>
+            <div class="prog-pct" id="pct-demos">0% of goal</div>
+          </div>
+          <div class="prog-item">
+            <div class="prog-row">
+              <span class="prog-name">New Partners Signed</span>
+              <span class="prog-nums" id="num-closes">0 / 0</span>
+            </div>
+            <div class="prog-track"><div class="prog-fill" id="bar-closes" style="width:0%"></div></div>
+            <div class="prog-pct" id="pct-closes">0% of goal</div>
+          </div>
+          <div class="prog-item">
+            <div class="prog-row">
+              <span class="prog-name">Revenue</span>
+              <span class="prog-nums" id="num-revenue">$0 / $0</span>
+            </div>
+            <div class="prog-track"><div class="prog-fill" id="bar-revenue" style="width:0%"></div></div>
+            <div class="prog-pct" id="pct-revenue">0% of goal</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MILESTONES -->
+      <div class="milestones">
+        <div class="ms-cell" id="ms-calls"><span class="ms-icon">📞</span><span class="ms-label">50% Calls</span></div>
+        <div class="ms-cell" id="ms-demos"><span class="ms-icon">💬</span><span class="ms-label">50% Demos</span></div>
+        <div class="ms-cell" id="ms-close1"><span class="ms-icon">🤝</span><span class="ms-label">First Partner</span></div>
+        <div class="ms-cell" id="ms-rev50"><span class="ms-icon">💰</span><span class="ms-label">50% Revenue</span></div>
+        <div class="ms-cell" id="ms-rev100"><span class="ms-icon">🏆</span><span class="ms-label">Goal Hit</span></div>
+      </div>
+
+      <!-- ENCOURAGEMENT -->
+      <div class="encourage">
+        <span class="enc-icon" id="enc-icon">📈</span>
+        <p class="enc-text" id="enc-text">Keep going — every conversation brings a family closer to a meaningful way to honor their loved one.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy">&copy; 2026 Parting Stone</span>
+      <span class="footer-note">Internal Sales Team Resource</span>
+    </div>
+  </footer>
+
+  <script>
+    function pct(a, g) { return g ? Math.min(Math.round(a / g * 100), 100) : 0; }
+    function $fmt(n) { return '$' + Number(n).toLocaleString('en-US'); }
+
+    function updateTracker(e) {
+      e.preventDefault();
+      const name   = document.getElementById('rep-name').value.trim() || 'Your';
+      const month  = document.getElementById('month-select').value;
+      const gC = +document.getElementById('goal-calls').value   || 0;
+      const aC = +document.getElementById('actual-calls').value || 0;
+      const gD = +document.getElementById('goal-demos').value   || 0;
+      const aD = +document.getElementById('actual-demos').value || 0;
+      const gCl= +document.getElementById('goal-closes').value  || 0;
+      const aCl= +document.getElementById('actual-closes').value|| 0;
+      const gR = +document.getElementById('goal-revenue').value || 0;
+      const aR = +document.getElementById('actual-revenue').value||0;
+      const pC = pct(aC,gC), pD = pct(aD,gD), pCl = pct(aCl,gCl), pR = pct(aR,gR);
+
+      document.getElementById('tracker-name').textContent = name + (name.endsWith('s') ? "'" : "'s") + ' Progress';
+      document.getElementById('tracker-badge').textContent = month + ' 2026';
+      document.getElementById('kpi-calls').textContent   = pC + '%';
+      document.getElementById('kpi-demos').textContent   = pD + '%';
+      document.getElementById('kpi-closes').textContent  = pCl + '%';
+      document.getElementById('kpi-revenue').textContent = pR + '%';
+      document.getElementById('bar-calls').style.width   = pC  + '%';
+      document.getElementById('bar-demos').style.width   = pD  + '%';
+      document.getElementById('bar-closes').style.width  = pCl + '%';
+      document.getElementById('bar-revenue').style.width = pR  + '%';
+      document.getElementById('num-calls').textContent   = aC + ' / ' + gC;
+      document.getElementById('num-demos').textContent   = aD + ' / ' + gD;
+      document.getElementById('num-closes').textContent  = aCl + ' / ' + gCl;
+      document.getElementById('num-revenue').textContent = $fmt(aR) + ' / ' + $fmt(gR);
+      document.getElementById('pct-calls').textContent   = pC  + '% of monthly goal';
+      document.getElementById('pct-demos').textContent   = pD  + '% of monthly goal';
+      document.getElementById('pct-closes').textContent  = pCl + '% of monthly goal';
+      document.getElementById('pct-revenue').textContent = pR  + '% of monthly goal';
+
+      ms('ms-calls',  pC  >= 50);
+      ms('ms-demos',  pD  >= 50);
+      ms('ms-close1', aCl >= 1);
+      ms('ms-rev50',  pR  >= 50);
+      ms('ms-rev100', pR  >= 100);
+
+      const overall = Math.round((pC+pD+pCl+pR)/4);
+      const msgs = [
+        [100, '🎉', "Goal achieved — incredible work helping families find meaningful closure."],
+        [75,  '🔥', "On fire! You're in the home stretch — finish the month strong."],
+        [50,  '📈', "Good momentum — more than halfway there. Every call counts."],
+        [25,  '💪', "Good start. Focus on your top follow-ups and build from here."],
+        [0,   '✨', "Every journey starts with a first step. Block time for calls today — you've got this."]
+      ];
+      const [, icon, text] = msgs.find(([t]) => overall >= t);
+      document.getElementById('enc-icon').textContent = icon;
+      document.getElementById('enc-text').textContent = text;
+      document.getElementById('tracker').style.display = 'block';
+      document.getElementById('tracker').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function ms(id, on) {
+      document.getElementById(id).classList.toggle('achieved', on);
+    }
+
+    function resetForm() {
+      document.getElementById('goal-form').reset();
+      document.getElementById('tracker').style.display = 'none';
+    }
+  </script>
+</body>
+</html>

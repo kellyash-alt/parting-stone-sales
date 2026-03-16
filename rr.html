@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parting Stone · Rockin' Rewards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #000;
+      --white: #fff;
+      --text: #4b4b4b;
+      --muted: #888;
+      --border: #e0e0e0;
+      --surface: #f8f8f8;
+      --nav-h: 60px;
+      --green: #2a7a3b;
+      --green-bg: #edf7f0;
+      --yellow: #b07d00;
+      --yellow-bg: #fdf8e7;
+      --red: #c0392b;
+      --red-bg: #fdf0ee;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Barlow', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.55;
+      color: var(--text);
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    ul { list-style: none; }
+
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ── NAV ── */
+    .site-header {
+      position: sticky; top: 0; z-index: 200;
+      background: var(--black);
+    }
+    .site-nav {
+      max-width: 1280px; margin: 0 auto;
+      padding: 0 2rem; height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo img { height: 36px; }
+    .nav-links { display: flex; height: var(--nav-h); }
+    .nav-links li { display: flex; }
+    .nav-links a {
+      display: flex; align-items: center;
+      padding: 0 1.1rem;
+      font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.13em; text-transform: uppercase;
+      color: #555; border-left: 1px solid #1c1c1c;
+      transition: color 0.12s, background 0.12s;
+    }
+    .nav-links li:last-child a { border-right: 1px solid #1c1c1c; }
+    .nav-links a:hover { color: var(--white); background: #141414; }
+    .nav-links a.active { color: var(--white); }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      background: var(--black);
+      background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, #1a1a1a 39px, #1a1a1a 40px);
+      border-bottom: 1px solid #222;
+      padding: 2.5rem 2rem;
+    }
+    .page-header-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem;
+    }
+    .page-header h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 800; letter-spacing: -0.01em;
+      text-transform: uppercase; color: var(--white);
+      line-height: 1; animation: riseIn 0.5s ease both;
+    }
+    .page-header-meta {
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #555; animation: riseIn 0.5s 0.1s ease both;
+      text-align: right; line-height: 1.5;
+    }
+
+    /* ── LAYOUT ── */
+    .main-content {
+      max-width: 1280px; margin: 0 auto;
+      padding: 2.5rem 2rem 5rem;
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted); border-bottom: 1px solid var(--border);
+      padding-bottom: 0.6rem; margin-bottom: 1.5rem;
+    }
+
+    /* ── SECTION WRAPPER ── */
+    .section-block {
+      border: 1px solid var(--border);
+      margin-bottom: 2.75rem;
+      animation: riseIn 0.5s ease both;
+    }
+    .section-block-header {
+      padding: 1.1rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--black);
+      display: flex; align-items: baseline; gap: 1rem;
+      justify-content: space-between;
+    }
+    .section-block-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.05rem; font-weight: 700;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      color: var(--white);
+    }
+    .section-block-sub {
+      font-size: 0.72rem; color: #666;
+      letter-spacing: 0.04em;
+    }
+    .section-block-body { padding: 1.5rem; }
+
+    /* ── CALCULATOR FORM ── */
+    .calc-form {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem 1.25rem;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 0.35rem; }
+    .form-group.span-2 { grid-column: span 2; }
+    .form-group label {
+      font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.13em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .form-group input,
+    .form-group select {
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.9rem; font-weight: 500;
+      color: var(--black);
+      background: var(--white);
+      border: 1px solid var(--border);
+      padding: 0.55rem 0.75rem;
+      outline: none;
+      transition: border-color 0.15s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus { border-color: var(--black); }
+    .select-wrap { position: relative; }
+    .select-wrap::after {
+      content: '▾';
+      position: absolute; right: 0.75rem; top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.75rem; color: var(--muted);
+      pointer-events: none;
+    }
+    .calc-submit-row {
+      grid-column: 1 / -1;
+      display: flex; gap: 0.75rem; align-items: center;
+      padding-top: 0.5rem; border-top: 1px solid var(--border);
+      margin-top: 0.25rem;
+    }
+    .btn-primary {
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.13em; text-transform: uppercase;
+      color: var(--white); background: var(--black);
+      border: none; padding: 0.7rem 1.75rem;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .btn-primary:hover { background: #222; }
+    .btn-secondary {
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); background: transparent;
+      border: 1px solid var(--border); padding: 0.7rem 1.25rem;
+      cursor: pointer; transition: border-color 0.15s, color 0.15s;
+    }
+    .btn-secondary:hover { border-color: #999; color: var(--text); }
+
+    /* ── RESULT CARD ── */
+    #calcResult { display: none; }
+    #calcResult.visible { display: block; }
+    .result-card {
+      margin-top: 1.5rem;
+      border: 1px solid var(--border);
+    }
+    .result-card-header {
+      background: var(--black); color: var(--white);
+      padding: 0.85rem 1.25rem;
+      display: flex; align-items: baseline; justify-content: space-between;
+    }
+    .result-card-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.2rem; font-weight: 700; letter-spacing: 0.04em;
+    }
+    .result-card-meta { font-size: 0.72rem; color: #888; }
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+    }
+    .result-cell {
+      padding: 1.1rem 1rem;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .result-cell:last-child { border-right: none; }
+    .result-cell-label {
+      font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 0.13em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.4rem;
+    }
+    .result-cell-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.6rem; font-weight: 800;
+      color: var(--black); line-height: 1;
+    }
+    .result-cell-sub { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
+    .result-total {
+      padding: 1.1rem 1.25rem;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--surface);
+    }
+    .result-total-label {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted);
+    }
+    .result-total-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.4rem; font-weight: 800; color: var(--black);
+    }
+    .result-total-actions { display: flex; gap: 0.75rem; }
+    .tier-badge {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid currentColor;
+    }
+    .tier-bronze { color: #8b5e3c; }
+    .tier-silver { color: #777; }
+    .tier-gold   { color: #b07d00; }
+    .tier-diamond { color: #2255aa; }
+
+    /* ── PAYOUT TABLE ── */
+    .payout-table-wrap { overflow-x: auto; }
+    .payout-table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.855rem;
+    }
+    .payout-table thead tr { background: var(--black); }
+    .payout-table thead th {
+      padding: 0.7rem 0.875rem;
+      font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.13em; text-transform: uppercase;
+      color: var(--white); text-align: left;
+      white-space: nowrap;
+    }
+    .payout-table tbody tr { border-bottom: 1px solid var(--border); }
+    .payout-table tbody tr:last-child.totals-row { border-bottom: none; }
+    .payout-table tbody td {
+      padding: 0.75rem 0.875rem;
+      vertical-align: middle;
+    }
+    .payout-table .totals-row {
+      background: var(--surface);
+      font-weight: 700; color: var(--black);
+      border-top: 2px solid var(--black);
+    }
+    .payout-table .totals-row td {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem; font-weight: 800;
+    }
+    .status-dot {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.72rem; font-weight: 600;
+    }
+    .status-dot::before {
+      content: '';
+      width: 7px; height: 7px;
+      border-radius: 50%; flex-shrink: 0;
+    }
+    .status-paid { color: var(--green); }
+    .status-paid::before { background: var(--green); }
+    .status-pending { color: var(--yellow); }
+    .status-pending::before { background: #e0a800; }
+    .status-overdue { color: var(--red); }
+    .status-overdue::before { background: var(--red); }
+
+    .row-paid   td:first-child { border-left: 3px solid var(--green); }
+    .row-pending td:first-child { border-left: 3px solid #e0a800; }
+    .row-overdue td:first-child { border-left: 3px solid var(--red); }
+
+    .btn-mark-paid {
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      background: transparent; border: 1px solid var(--border);
+      color: var(--muted); padding: 0.3rem 0.65rem;
+      cursor: pointer; transition: all 0.15s; white-space: nowrap;
+    }
+    .btn-mark-paid:hover { border-color: var(--green); color: var(--green); }
+    .btn-mark-paid.paid-done {
+      border-color: var(--green); color: var(--green);
+      background: var(--green-bg); cursor: default;
+    }
+    .empty-table-msg {
+      text-align: center; padding: 3rem 1rem;
+      font-size: 0.85rem; color: var(--muted);
+    }
+
+    /* ── PROGRAM SUMMARY CARDS ── */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .summary-card {
+      border-right: 1px solid var(--border);
+    }
+    .summary-card:last-child { border-right: none; }
+    .summary-card-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .summary-card-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.9rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--black);
+    }
+    .summary-card-rate {
+      font-size: 0.72rem; color: var(--muted); margin-top: 0.15rem;
+    }
+    .summary-card-body { padding: 1.25rem; }
+    .summary-stat-row {
+      display: flex; justify-content: space-between;
+      align-items: baseline;
+      padding: 0.45rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .summary-stat-row:last-child { border-bottom: none; }
+    .summary-stat-label {
+      font-size: 0.72rem; color: var(--muted);
+    }
+    .summary-stat-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem; font-weight: 700; color: var(--black);
+    }
+    .summary-total {
+      padding: 1rem 1.25rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: baseline;
+    }
+    .summary-total-label {
+      font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted);
+    }
+    .summary-total-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.8rem; font-weight: 800; color: var(--black);
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="site-header">
+  <nav class="site-nav">
+    <a class="nav-logo" href="index.html">
+      <img src="Parting-Stone-logo-FINAL.png" alt="Parting Stone" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="resources.html">Resources</a></li>
+      <li><a href="goals.html">Goal Tracker</a></li>
+      <li><a href="rr.html" class="active">R&amp;R</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- PAGE HEADER -->
+<section class="page-header">
+  <div class="page-header-inner">
+    <h1>Rockin' Rewards</h1>
+    <span class="page-header-meta">Partner Payout Calculator<br>Internal Use · Chad</span>
+  </div>
+</section>
+
+<main class="main-content">
+
+  <!-- ══════════════════════════════════════════
+       SECTION 1: R&R CALCULATOR
+  ══════════════════════════════════════════ -->
+  <div class="section-label">Section 1 — R&amp;R Calculator</div>
+  <div class="section-block" style="animation-delay:0.05s">
+    <div class="section-block-header">
+      <span class="section-block-title">Calculate Partner Payout</span>
+      <span class="section-block-sub">Enter details below · results appear instantly</span>
+    </div>
+    <div class="section-block-body">
+      <form id="calcForm" class="calc-form" autocomplete="off">
+
+        <div class="form-group span-2">
+          <label for="fhName">Funeral Home Name</label>
+          <input type="text" id="fhName" placeholder="e.g. Riverside Memorial Chapel" required />
+        </div>
+
+        <div class="form-group">
+          <label for="fhLocation">Location / City</label>
+          <input type="text" id="fhLocation" placeholder="e.g. Portland, OR" />
+        </div>
+
+        <div class="form-group">
+          <label for="fhRep">Rep Assigned</label>
+          <div class="select-wrap">
+            <select id="fhRep">
+              <option value="Chad">Chad</option>
+              <option value="Carla">Carla</option>
+              <option value="Kelly">Kelly</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="ordersQtr">Orders This Quarter</label>
+          <input type="number" id="ordersQtr" min="0" value="0" />
+        </div>
+
+        <div class="form-group">
+          <label for="ordersWeek">Orders This Week</label>
+          <input type="number" id="ordersWeek" min="0" value="0" />
+        </div>
+
+        <div class="form-group">
+          <label for="partnerStatus">Partner Status</label>
+          <div class="select-wrap">
+            <select id="partnerStatus">
+              <option value="active">Active</option>
+              <option value="at-risk">At-Risk (181–365 days)</option>
+              <option value="lapsed">Lapsed (365+ days)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="programOption">Program Option</label>
+          <div class="select-wrap">
+            <select id="programOption">
+              <option value="1">Option 1 — $50 / order</option>
+              <option value="2">Option 2 — $35 / order</option>
+              <option value="3">Option 3 — $25 / order</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="calc-submit-row">
+          <button type="submit" class="btn-primary">Calculate &amp; Add to Table</button>
+          <button type="button" class="btn-secondary" onclick="resetForm()">Clear</button>
+        </div>
+
+      </form>
+
+      <!-- RESULT CARD -->
+      <div id="calcResult">
+        <div class="result-card">
+          <div class="result-card-header">
+            <span class="result-card-name" id="resName">—</span>
+            <span class="result-card-meta" id="resMeta">—</span>
+          </div>
+          <div class="result-grid">
+            <div class="result-cell">
+              <div class="result-cell-label">Per-Order Bonus</div>
+              <div class="result-cell-value" id="resPerOrder">$0</div>
+              <div class="result-cell-sub" id="resPerOrderSub">—</div>
+            </div>
+            <div class="result-cell">
+              <div class="result-cell-label">Quarterly Tier</div>
+              <div class="result-cell-value" id="resTierAmt">$0</div>
+              <div class="result-cell-sub" id="resTierBadge">—</div>
+            </div>
+            <div class="result-cell">
+              <div class="result-cell-label">Weekly Accelerator</div>
+              <div class="result-cell-value" id="resWeekly">$0</div>
+              <div class="result-cell-sub" id="resWeeklySub">—</div>
+            </div>
+            <div class="result-cell">
+              <div class="result-cell-label">Reactivation Bonus</div>
+              <div class="result-cell-value" id="resReact">$0</div>
+              <div class="result-cell-sub" id="resReactSub">—</div>
+            </div>
+            <div class="result-cell" style="background:var(--surface)">
+              <div class="result-cell-label">Total Owed</div>
+              <div class="result-cell-value" id="resTotal" style="font-size:2rem">$0</div>
+              <div class="result-cell-sub" id="resTotalSub">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 2: PARTNER PAYOUT TABLE
+  ══════════════════════════════════════════ -->
+  <div class="section-label">Section 2 — Partner Payout Table</div>
+  <div class="section-block" style="animation-delay:0.15s">
+    <div class="section-block-header">
+      <span class="section-block-title">All Partners This Period</span>
+      <span class="section-block-sub" id="tableCountLabel">0 partners entered</span>
+    </div>
+    <div class="section-block-body" style="padding:0">
+      <div class="payout-table-wrap">
+        <table class="payout-table" id="payoutTable">
+          <thead>
+            <tr>
+              <th>Funeral Home</th>
+              <th>Location</th>
+              <th>Rep</th>
+              <th>Option</th>
+              <th>Orders</th>
+              <th>Tier</th>
+              <th>Per-Order</th>
+              <th>Weekly</th>
+              <th>Reactivation</th>
+              <th>Total Owed</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="payoutBody">
+            <tr id="emptyRow">
+              <td colspan="12" class="empty-table-msg">No partners added yet — use the calculator above to get started.</td>
+            </tr>
+          </tbody>
+          <tfoot id="payoutFoot" style="display:none">
+            <tr class="totals-row">
+              <td colspan="6">Totals</td>
+              <td id="footPerOrder">$0</td>
+              <td id="footWeekly">$0</td>
+              <td id="footReact">$0</td>
+              <td id="footTotal">$0</td>
+              <td colspan="2"></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 3: PROGRAM SUMMARY
+  ══════════════════════════════════════════ -->
+  <div class="section-label">Section 3 — Program Summary</div>
+  <div class="section-block" style="animation-delay:0.25s">
+    <div class="section-block-header">
+      <span class="section-block-title">Totals by Program Option</span>
+      <span class="section-block-sub">Updates automatically as partners are added</span>
+    </div>
+    <div class="section-block-body" style="padding:0">
+      <div class="summary-grid">
+
+        <!-- OPTION 1 -->
+        <div class="summary-card">
+          <div class="summary-card-header">
+            <div class="summary-card-title">Option 1</div>
+            <div class="summary-card-rate">$50 per order</div>
+          </div>
+          <div class="summary-card-body">
+            <div class="summary-stat-row">
+              <span class="summary-stat-label">Partners</span>
+              <span class="summary-stat-value" id="s1Partners">0</span>
+            </div>
+            <div class="summary-stat-row">
+              <span class="summary-stat-label">Chad</span>
+              <span class="summary-stat-value" id="s1Chad">$0</span>
+            </div>
+            <div class="summary-stat-row">
+              <span class="summary-stat-label">Carla</span>
+              <span class="summary-stat-value" id="s1Carla">$0</span>
+            </div>
+            <div class="summary-stat-row">
+              <span class="summary-stat-label">Kelly</span>
+              <span class="summary-stat-value" id="s1Kelly">$0</span>
+            </div>
+          </div>
+          <div class="summary-total">
+            <span class="summary-total-label">Total Owed</span>
+            <span class="summary-total-value" id="s1Total">$0</span>
+          </div>
+        </div>
+
+        <!-- OPTION 2 -->
+        <div class="summary-card">
+          <div class="summary-card-header">
+            <div class="summary-card-title">Option 2</div>
+            <div class="summary-card-rate">$35 per order</div>
+          </div>
+          <div class="summary-card-body">
+            <div class="summary-stat-row">
+              <span class="summary-stat-label">Partners</span>
+              <span class="summary-stat-value" id="s2Partners">0</span>
+            </div>
+            <div class="summary-stat-row">
+              <span class="summary-stat-label">Chad</span>
+              <span class="summary-stat-value" id="s2Chad">$0</span>
+            </div>
+            <div class="summary-stat-row">
+              <span class="summary-stat-label">Carla</span>
+              <span class="summary-stat-value" id="s2Carla">$0</span>
+            </div>
+            <div class="summary-stat-row">
+              <span class="summary-stat-label">Kelly</span>
+              <span class="summary-stat-value" id="s2Kelly">$0</span>
+            </div>
+          </div>
+          <div class="summary-total">
+            <span class="summary-total-label">Total Owed</span>
+            <span class="summary-total-value" id="s2Total">$0</span>
+          </div>
+        </div>
+
+        <!-- OPTION 3 -->
+        <div class="summary-card">
+          <div class="summary-card-header">
+            <div class="summary-card-title">Option 3</div>
+            <div class="summary-card-rate">$25 per order</div>
+          </div>
+          <div class="summary-card-body">
+            <div class="summary-stat-row">
+              <span class="summary-stat-label">Partners</span>
+              <span class="summary-stat-value" id="s3Partners">0</span>
+            </div>
+            <div class="summary-stat-row">
+              <span class="summary-stat-label">Chad</span>
+              <span class="summary-stat-value" id="s3Chad">$0</span>
+            </div>
+            <div class="summary-stat-row">
+              <span class="summary-stat-label">Carla</span>
+              <span class="summary-stat-value" id="s3Carla">$0</span>
+            </div>
+            <div class="summary-stat-row">
+              <span class="summary-stat-label">Kelly</span>
+              <span class="summary-stat-value" id="s3Kelly">$0</span>
+            </div>
+          </div>
+          <div class="summary-total">
+            <span class="summary-total-label">Total Owed</span>
+            <span class="summary-total-value" id="s3Total">$0</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+  // ── DATA ──
+  const partners = [];
+
+  // ── RATE TABLES ──
+  const perOrderRate = { '1': 50, '2': 35, '3': 25 };
+
+  // Tier thresholds: [min orders, name, Option1, Option2, Option3]
+  const tiers = [
+    { min: 13, name: 'Diamond', bonus: { '1': 600, '2': 450, '3': 300 } },
+    { min:  9, name: 'Gold',    bonus: { '1': 400, '2': 300, '3': 200 } },
+    { min:  5, name: 'Silver',  bonus: { '1': 250, '2': 175, '3': 125 } },
+    { min:  2, name: 'Bronze',  bonus: { '1': 100, '2':  75, '3':  50 } },
+  ];
+
+  // Weekly accelerator: [min weekly orders, Option1, Option2, Option3]
+  const weeklyAccel = [
+    { min: 4, bonus: { '1': 100, '2': 75, '3': 50 } },
+    { min: 3, bonus: { '1':  50, '2': 35, '3': 25 } },
+    { min: 2, bonus: { '1':  25, '2': 15, '3': 10 } },
+  ];
+
+  // Reactivation bonus: At-Risk vs Lapsed
+  const reactBonus = {
+    'at-risk': { '1': 200, '2': 150, '3': 100 },
+    'lapsed':  { '1': 300, '2': 200, '3': 150 },
+  };
+
+  // ── CALCULATE ──
+  function calculate(opt, qtrOrders, weekOrders, status) {
+    const rate = perOrderRate[opt];
+
+    // Per-order
+    const perOrder = qtrOrders * rate;
+
+    // Tier
+    let tierName = 'None', tierAmt = 0;
+    for (const t of tiers) {
+      if (qtrOrders >= t.min) { tierName = t.name; tierAmt = t.bonus[opt]; break; }
+    }
+
+    // Weekly
+    let weeklyAmt = 0, weeklyLabel = 'None';
+    for (const w of weeklyAccel) {
+      if (weekOrders >= w.min) { weeklyAmt = w.bonus[opt]; weeklyLabel = weekOrders + ' orders this week'; break; }
+    }
+
+    // Reactivation
+    let reactAmt = 0, reactLabel = 'N/A';
+    if (status === 'at-risk' || status === 'lapsed') {
+      reactAmt = reactBonus[status][opt];
+      reactLabel = status === 'at-risk' ? 'At-Risk reactivation' : 'Lapsed reactivation';
+    }
+
+    const total = perOrder + tierAmt + weeklyAmt + reactAmt;
+    return { perOrder, tierName, tierAmt, weeklyAmt, weeklyLabel, reactAmt, reactLabel, total };
+  }
+
+  // ── TIER BADGE HTML ──
+  function tierBadge(name) {
+    const cls = { 'Diamond': 'tier-diamond', 'Gold': 'tier-gold', 'Silver': 'tier-silver', 'Bronze': 'tier-bronze' };
+    if (!cls[name]) return '<span style="color:var(--muted);font-size:0.75rem">—</span>';
+    return `<span class="tier-badge ${cls[name]}">${name}</span>`;
+  }
+
+  // ── DOLLAR FORMAT ──
+  function fmt(n) { return '$' + n.toLocaleString(); }
+
+  // ── FORM SUBMIT ──
+  document.getElementById('calcForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name     = document.getElementById('fhName').value.trim();
+    const location = document.getElementById('fhLocation').value.trim();
+    const rep      = document.getElementById('fhRep').value;
+    const opt      = document.getElementById('programOption').value;
+    const qtrOrders  = parseInt(document.getElementById('ordersQtr').value) || 0;
+    const weekOrders = parseInt(document.getElementById('ordersWeek').value) || 0;
+    const status   = document.getElementById('partnerStatus').value;
+
+    const r = calculate(opt, qtrOrders, weekOrders, status);
+
+    // Show result card
+    document.getElementById('resName').textContent = name || 'Unnamed Partner';
+    document.getElementById('resMeta').textContent = (location || '—') + '  ·  Rep: ' + rep + '  ·  Option ' + opt;
+    document.getElementById('resPerOrder').textContent = fmt(r.perOrder);
+    document.getElementById('resPerOrderSub').textContent = qtrOrders + ' orders × ' + fmt(perOrderRate[opt]);
+    document.getElementById('resTierAmt').textContent = fmt(r.tierAmt);
+    document.getElementById('resTierBadge').innerHTML = r.tierName !== 'None' ? tierBadge(r.tierName) : '—';
+    document.getElementById('resWeekly').textContent = fmt(r.weeklyAmt);
+    document.getElementById('resWeeklySub').textContent = r.weeklyLabel;
+    document.getElementById('resReact').textContent = fmt(r.reactAmt);
+    document.getElementById('resReactSub').textContent = r.reactLabel;
+    document.getElementById('resTotal').textContent = fmt(r.total);
+    document.getElementById('resTotalSub').textContent = 'Option ' + opt + ' · ' + r.tierName + ' tier';
+
+    const resultEl = document.getElementById('calcResult');
+    resultEl.classList.add('visible');
+
+    // Add to partners array
+    const partner = {
+      id: Date.now(),
+      name, location, rep, opt, qtrOrders, weekOrders, status,
+      perOrder: r.perOrder, tierName: r.tierName, tierAmt: r.tierAmt,
+      weeklyAmt: r.weeklyAmt, reactAmt: r.reactAmt, total: r.total,
+      payStatus: 'pending'
+    };
+    partners.push(partner);
+    renderTable();
+    renderSummary();
+  });
+
+  // ── RESET FORM ──
+  function resetForm() {
+    document.getElementById('calcForm').reset();
+    document.getElementById('calcResult').classList.remove('visible');
+  }
+
+  // ── RENDER TABLE ──
+  function renderTable() {
+    const body = document.getElementById('payoutBody');
+    const foot = document.getElementById('payoutFoot');
+
+    if (partners.length === 0) {
+      body.innerHTML = '<tr id="emptyRow"><td colspan="12" class="empty-table-msg">No partners added yet — use the calculator above to get started.</td></tr>';
+      foot.style.display = 'none';
+      document.getElementById('tableCountLabel').textContent = '0 partners entered';
+      return;
+    }
+
+    document.getElementById('tableCountLabel').textContent = partners.length + ' partner' + (partners.length !== 1 ? 's' : '') + ' entered';
+    foot.style.display = '';
+
+    body.innerHTML = partners.map(p => {
+      const rowCls = p.payStatus === 'paid' ? 'row-paid' : p.payStatus === 'overdue' ? 'row-overdue' : 'row-pending';
+      const statusHtml = p.payStatus === 'paid'
+        ? '<span class="status-dot status-paid">Paid</span>'
+        : p.payStatus === 'overdue'
+          ? '<span class="status-dot status-overdue">Overdue</span>'
+          : '<span class="status-dot status-pending">Pending</span>';
+      const btnHtml = p.payStatus === 'paid'
+        ? '<button class="btn-mark-paid paid-done" disabled>✓ Paid</button>'
+        : `<button class="btn-mark-paid" onclick="markPaid(${p.id})">Mark Paid</button>`;
+      return `<tr class="${rowCls}" id="row-${p.id}">
+        <td><strong>${p.name}</strong></td>
+        <td>${p.location || '—'}</td>
+        <td>${p.rep}</td>
+        <td>Option ${p.opt}</td>
+        <td>${p.qtrOrders}</td>
+        <td>${tierBadge(p.tierName)}</td>
+        <td>${fmt(p.perOrder)}</td>
+        <td>${fmt(p.weeklyAmt)}</td>
+        <td>${fmt(p.reactAmt)}</td>
+        <td><strong>${fmt(p.total)}</strong></td>
+        <td>${statusHtml}</td>
+        <td>${btnHtml}</td>
+      </tr>`;
+    }).join('');
+
+    // Totals
+    const totPerOrder = partners.reduce((s, p) => s + p.perOrder, 0);
+    const totWeekly   = partners.reduce((s, p) => s + p.weeklyAmt, 0);
+    const totReact    = partners.reduce((s, p) => s + p.reactAmt, 0);
+    const totTotal    = partners.reduce((s, p) => s + p.total, 0);
+    document.getElementById('footPerOrder').textContent = fmt(totPerOrder);
+    document.getElementById('footWeekly').textContent   = fmt(totWeekly);
+    document.getElementById('footReact').textContent    = fmt(totReact);
+    document.getElementById('footTotal').textContent    = fmt(totTotal);
+  }
+
+  // ── MARK AS PAID ──
+  function markPaid(id) {
+    const p = partners.find(x => x.id === id);
+    if (p) { p.payStatus = 'paid'; renderTable(); renderSummary(); }
+  }
+
+  // ── RENDER SUMMARY ──
+  function renderSummary() {
+    const opts = ['1', '2', '3'];
+    const reps = ['Chad', 'Carla', 'Kelly'];
+
+    opts.forEach(opt => {
+      const subset = partners.filter(p => p.opt === opt);
+      const n = opt;
+      document.getElementById(`s${n}Partners`).textContent = subset.length;
+      reps.forEach(rep => {
+        const repTotal = subset.filter(p => p.rep === rep).reduce((s, p) => s + p.total, 0);
+        document.getElementById(`s${n}${rep}`).textContent = fmt(repTotal);
+      });
+      const total = subset.reduce((s, p) => s + p.total, 0);
+      document.getElementById(`s${n}Total`).textContent = fmt(total);
+    });
+  }
+</script>
+</body>
+</html>

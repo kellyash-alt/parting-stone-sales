@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resources · Parting Stone Sales</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Barlow+Condensed:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #000;
+      --white: #fff;
+      --text: #4b4b4b;
+      --muted: #888;
+      --border: #e0e0e0;
+      --surface: #f8f8f8;
+      --nav-h: 60px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Barlow', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.55;
+      color: var(--text);
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { display: block; max-width: 100%; }
+    ul { list-style: none; }
+
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ── NAV ── */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: var(--black);
+    }
+    .site-nav {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo img { height: 36px; }
+    .nav-links { display: flex; height: var(--nav-h); }
+    .nav-links li { display: flex; }
+    .nav-links a {
+      display: flex;
+      align-items: center;
+      padding: 0 1.2rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #555;
+      border-left: 1px solid #1c1c1c;
+      transition: color 0.12s, background 0.12s;
+    }
+    .nav-links li:last-child a { border-right: 1px solid #1c1c1c; }
+    .nav-links a:hover { color: var(--white); background: #141414; }
+    .nav-links a.active { color: var(--white); }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      background: var(--black);
+      background-image: repeating-linear-gradient(
+        0deg, transparent, transparent 47px,
+        rgba(255,255,255,0.022) 47px, rgba(255,255,255,0.022) 48px
+      );
+      padding: 3rem 2rem;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    .page-header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: baseline;
+      gap: 2rem;
+    }
+    .eyebrow {
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #3a3a3a;
+    }
+    .page-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: var(--white);
+      line-height: 1;
+      animation: riseIn 0.6s 0.05s both;
+    }
+
+    /* ── TAB STRIP ── */
+    .tab-strip {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      overflow-x: auto;
+      position: sticky;
+      top: var(--nav-h);
+      z-index: 100;
+    }
+    .tab-item {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 1rem 1.5rem;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+      transition: color 0.14s, border-color 0.14s;
+    }
+    .tab-item:hover { color: var(--black); }
+    .tab-item.active { color: var(--black); border-color: var(--black); }
+
+    /* ── MAIN LAYOUT ── */
+    .page-body {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 4rem 2rem 5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 4.5rem;
+    }
+
+    /* ── SECTION HEAD ── */
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }
+    .section-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: var(--black);
+      line-height: 1;
+    }
+    .section-desc {
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--muted);
+      margin-left: auto;
+    }
+
+    /* ── LINK CARDS ── */
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-left: 1px solid var(--border);
+      border-top: 1px solid var(--border);
+    }
+    .link-card {
+      padding: 1.5rem 1.5rem 1.25rem;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      transition: background 0.14s;
+      position: relative;
+    }
+    .link-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--black);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .link-card:hover { background: var(--surface); }
+    .link-card:hover::before { transform: scaleY(1); }
+    .link-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--black);
+    }
+    .link-desc {
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--muted);
+      line-height: 1.6;
+      flex: 1;
+    }
+    .link-url {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      margin-top: 0.5rem;
+    }
+
+    /* ── CALL SCRIPTS ── */
+    .scripts-list { display: flex; flex-direction: column; }
+    .script-item {
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .script-item:first-child { border-top: 1px solid var(--border); }
+    .script-toggle {
+      width: 100%;
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: grid;
+      grid-template-columns: 40px 1fr auto auto;
+      align-items: center;
+      gap: 1.25rem;
+      padding: 1.25rem 1.5rem;
+      text-align: left;
+      transition: background 0.12s;
+    }
+    .script-toggle:hover { background: var(--surface); }
+    .script-idx {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+    .script-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--black);
+    }
+    .script-tag {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 0.2rem 0.55rem;
+    }
+    .script-chevron {
+      font-size: 0.65rem;
+      color: var(--muted);
+      transition: transform 0.25s;
+    }
+    .script-item.open .script-chevron { transform: rotate(180deg); }
+    .script-body {
+      display: none;
+      padding: 0 1.5rem 1.75rem calc(1.5rem + 40px + 1.25rem);
+      border-top: 1px solid var(--border);
+    }
+    .script-item.open .script-body { display: block; }
+    .script-section-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 1.5rem 0 0.5rem;
+    }
+    .script-section-label:first-child { margin-top: 1.5rem; }
+    .script-quote {
+      background: var(--surface);
+      border-left: 2px solid var(--black);
+      padding: 1rem 1.25rem;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 0.9rem;
+      color: var(--black);
+      line-height: 1.7;
+      margin: 0.4rem 0;
+    }
+    .script-note {
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ── OBJECTION TABLE ── */
+    .obj-table-wrap {
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .obj-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    .obj-table thead tr {
+      background: var(--black);
+    }
+    .obj-table th {
+      padding: 1rem 1.5rem;
+      text-align: left;
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #555;
+      font-family: 'Barlow', sans-serif;
+    }
+    .obj-table td {
+      padding: 1.1rem 1.5rem;
+      vertical-align: top;
+      line-height: 1.65;
+      border-bottom: 1px solid var(--border);
+    }
+    .obj-table tr:last-child td { border-bottom: none; }
+    .obj-table tr:hover td { background: var(--surface); }
+    .obj-table td:first-child {
+      font-style: italic;
+      font-weight: 500;
+      color: var(--black);
+      width: 38%;
+    }
+    .obj-table td:last-child {
+      font-weight: 300;
+      color: var(--text);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      border-top: 1px solid #141414;
+      padding: 1.5rem 2rem;
+    }
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-copy {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #2e2e2e;
+    }
+    .footer-note { font-size: 0.68rem; color: #2a2a2a; }
+
+    @media (max-width: 900px) {
+      .links-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .nav-links a { padding: 0 0.75rem; font-size: 0.65rem; letter-spacing: 0.08em; }
+      .page-body { padding: 2.5rem 1.25rem 4rem; }
+      .links-grid { grid-template-columns: 1fr; }
+      .script-toggle { grid-template-columns: 30px 1fr auto; }
+      .script-tag { display: none; }
+      .script-body { padding-left: 1.5rem; }
+      .obj-table td:first-child { width: auto; }
+      .section-desc { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <nav class="site-nav">
+      <a class="nav-logo" href="index.html">
+        <img src="Parting-Stone-logo-FINAL.png" alt="Parting Stone">
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="resources.html" class="active">Resources</a></li>
+        <li><a href="goals.html">Goal Tracker</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="page-header">
+    <div class="page-header-inner">
+      <span class="eyebrow">Sales Team</span>
+      <h1 class="page-title">Resources</h1>
+    </div>
+  </div>
+
+  <div class="tab-strip">
+    <a class="tab-item active" href="#links">Useful Links</a>
+    <a class="tab-item" href="#scripts">Call Scripts</a>
+    <a class="tab-item" href="#objections">Objection Handling</a>
+  </div>
+
+  <div class="page-body">
+
+    <!-- USEFUL LINKS -->
+    <section id="links">
+      <div class="section-head">
+        <span class="section-num">01</span>
+        <h2 class="section-name">Useful Links</h2>
+        <span class="section-desc">Quick access to daily tools</span>
+      </div>
+      <div class="links-grid">
+        <a class="link-card" href="https://www.partingstone.com" target="_blank">
+          <span class="link-title">Parting Stone Website</span>
+          <span class="link-desc">Main customer-facing site. Walk families through the full product experience.</span>
+          <span class="link-url">partingstone.com</span>
+        </a>
+        <a class="link-card" href="https://www.partingstone.com/how-it-works" target="_blank">
+          <span class="link-title">How It Works</span>
+          <span class="link-desc">Step-by-step solidification process overview — great to share with funeral homes.</span>
+          <span class="link-url">partingstone.com/how-it-works</span>
+        </a>
+        <a class="link-card" href="https://www.partingstone.com/funeral-homes" target="_blank">
+          <span class="link-title">Funeral Home Partners</span>
+          <span class="link-desc">Partner network resources and information for funeral home directors.</span>
+          <span class="link-url">partingstone.com/funeral-homes</span>
+        </a>
+        <a class="link-card" href="https://www.partingstone.com/faq" target="_blank">
+          <span class="link-title">FAQ Page</span>
+          <span class="link-desc">Common family and funeral home questions. Useful pre-call prep for objection handling.</span>
+          <span class="link-url">partingstone.com/faq</span>
+        </a>
+        <a class="link-card" href="https://app.hubspot.com" target="_blank">
+          <span class="link-title">HubSpot CRM</span>
+          <span class="link-desc">Log calls, update deals, and manage your full pipeline in one place.</span>
+          <span class="link-url">app.hubspot.com</span>
+        </a>
+        <a class="link-card" href="https://drive.google.com" target="_blank">
+          <span class="link-title">Sales Drive Folder</span>
+          <span class="link-desc">Pitch decks, product photography, one-pagers, and training materials.</span>
+          <span class="link-url">drive.google.com</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- CALL SCRIPTS -->
+    <section id="scripts">
+      <div class="section-head">
+        <span class="section-num">02</span>
+        <h2 class="section-name">Call Scripts</h2>
+        <span class="section-desc">Guides for every stage of the conversation</span>
+      </div>
+      <div class="scripts-list">
+
+        <div class="script-item" id="s1">
+          <button class="script-toggle" onclick="toggleScript('s1')">
+            <span class="script-idx">01</span>
+            <span class="script-title">Cold Outreach — Funeral Home Introduction</span>
+            <span class="script-tag">Intro</span>
+            <span class="script-chevron">▼</span>
+          </button>
+          <div class="script-body">
+            <p class="script-section-label">Opening</p>
+            <blockquote class="script-quote">"Hi [Name], my name is [Your Name] calling from Parting Stone. Do you have about two minutes? I'd love to share something that a number of funeral homes in [region] have been really excited about."</blockquote>
+            <p class="script-section-label">The Pitch</p>
+            <blockquote class="script-quote">"We work with funeral homes to offer families something new after cremation — we solidify cremated remains into a set of smooth, natural stones. Families keep the stones rather than an urn, and they're finding it to be a much more tangible and personal way to stay connected."</blockquote>
+            <p class="script-section-label">The Ask</p>
+            <blockquote class="script-quote">"We don't ask you to do anything other than mention it as an option. You set the price point, we handle everything else. Would you be open to a 15-minute call this week?"</blockquote>
+            <p class="script-section-label">If They Push Back</p>
+            <p class="script-note">Thank them, ask to send a brief email, and note in CRM to follow up in 30 days.</p>
+          </div>
+        </div>
+
+        <div class="script-item" id="s2">
+          <button class="script-toggle" onclick="toggleScript('s2')">
+            <span class="script-idx">02</span>
+            <span class="script-title">Follow-Up — After Sending Materials</span>
+            <span class="script-tag">Follow-Up</span>
+            <span class="script-chevron">▼</span>
+          </button>
+          <div class="script-body">
+            <p class="script-section-label">Opening</p>
+            <blockquote class="script-quote">"Hi [Name], this is [Your Name] from Parting Stone. I sent over some information last week — did you get a chance to take a look?"</blockquote>
+            <p class="script-section-label">If Yes</p>
+            <blockquote class="script-quote">"Great! Any questions come up? A lot of directors ask about [common question] — happy to walk through it."</blockquote>
+            <p class="script-section-label">If No</p>
+            <blockquote class="script-quote">"No worries. The short version: we solidify cremated remains into stones — no extra work on your end, and families really value it. Can I give you a 60-second overview now?"</blockquote>
+            <p class="script-section-label">Close</p>
+            <blockquote class="script-quote">"Would you be open to a short call this week? I can show you how a few [state] funeral homes have rolled it out. Shouldn't take more than 15 minutes."</blockquote>
+          </div>
+        </div>
+
+        <div class="script-item" id="s3">
+          <button class="script-toggle" onclick="toggleScript('s3')">
+            <span class="script-idx">03</span>
+            <span class="script-title">Closing Call — Moving to Partnership</span>
+            <span class="script-tag">Closing</span>
+            <span class="script-chevron">▼</span>
+          </button>
+          <div class="script-body">
+            <p class="script-section-label">Recap Value</p>
+            <blockquote class="script-quote">"Based on what we've talked about, it sounds like this could be a meaningful add-on — especially for families who want something more personal than a traditional urn."</blockquote>
+            <p class="script-section-label">Address Hesitation</p>
+            <blockquote class="script-quote">"I want to make sure you feel totally comfortable. Is there anything still holding you back, or any questions I haven't answered?"</blockquote>
+            <p class="script-section-label">The Ask</p>
+            <blockquote class="script-quote">"Here's what I'd suggest: I can send over our simple partner agreement — no minimums, no long-term commitment. Try it with one family, see how they respond, and go from there."</blockquote>
+            <p class="script-section-label">After They Agree</p>
+            <p class="script-note">Send the agreement within 24 hours. Log in HubSpot. Move deal to "Agreement Sent." Schedule a 1-week check-in.</p>
+          </div>
+        </div>
+
+        <div class="script-item" id="s4">
+          <button class="script-toggle" onclick="toggleScript('s4')">
+            <span class="script-idx">04</span>
+            <span class="script-title">Voicemail Script</span>
+            <span class="script-tag">Voicemail</span>
+            <span class="script-chevron">▼</span>
+          </button>
+          <div class="script-body">
+            <p class="script-section-label">Script</p>
+            <blockquote class="script-quote">"Hi [Name], this is [Your Name] calling from Parting Stone — we help families receive their loved one's cremated remains as a set of smooth, natural stones. I'd love to share how a few local funeral homes have been offering this. I'll try you again, or feel free to call me back at [number]. Thanks so much."</blockquote>
+            <p class="script-section-label">Tips</p>
+            <p class="script-note">Keep voicemails under 30 seconds. Mention one concrete thing and one clear next step. Always follow up with an email the same day.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- OBJECTION HANDLING -->
+    <section id="objections">
+      <div class="section-head">
+        <span class="section-num">03</span>
+        <h2 class="section-name">Objection Handling</h2>
+        <span class="section-desc">Empathetic responses that keep conversations moving</span>
+      </div>
+      <div class="obj-table-wrap">
+        <table class="obj-table">
+          <thead>
+            <tr>
+              <th>Objection</th>
+              <th>Suggested Response</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>"We already offer urns — we have enough options."</td>
+              <td>Parting Stone isn't an alternative to urns, it's an addition for families who want something more personal. It tends to appeal to a different type of family than traditional cremation products.</td>
+            </tr>
+            <tr>
+              <td>"How does our staff explain this to families?"</td>
+              <td>We provide one-page materials you can leave in your arrangement room. Most directors say a sentence or two and families take it from there. We're also available to answer family questions directly.</td>
+            </tr>
+            <tr>
+              <td>"What does it cost the family?"</td>
+              <td>You set the price. We give you wholesale pricing and you mark it up however makes sense for your market. Most partners price it between $495 and $895 retail.</td>
+            </tr>
+            <tr>
+              <td>"I'm not sure my families would go for this."</td>
+              <td>It tends to resonate most with families who feel conflicted about traditional cremation. Partners are often surprised. Would it help to hear what a similar funeral home in your area has experienced?</td>
+            </tr>
+            <tr>
+              <td>"Is this safe? Are they really the remains?"</td>
+              <td>Yes. The remains are processed with a strict chain-of-custody at our facility. Every stone set is uniquely tied to that individual. We can share our process documentation anytime.</td>
+            </tr>
+            <tr>
+              <td>"I'd need to talk to my owner first."</td>
+              <td>Of course. Would it help if I put together a short summary you could share, or would you prefer a brief call with all of you together? Either works for me.</td>
+            </tr>
+            <tr>
+              <td>"We've tried add-ons and families don't buy them."</td>
+              <td>The funeral homes with the highest adoption mention it as a natural part of the arrangement conversation — not as an upsell. We can talk through exactly how other partners approach it.</td>
+            </tr>
+            <tr>
+              <td>"Just email me information."</td>
+              <td>Absolutely, I'll send that today. Would a 10-minute call next week make sense so I can answer any questions? I want to make sure it's useful for you, not just another email in the inbox.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy">&copy; 2026 Parting Stone</span>
+      <span class="footer-note">Internal Sales Team Resource</span>
+    </div>
+  </footer>
+
+  <script>
+    function toggleScript(id) {
+      const el = document.getElementById(id);
+      const isOpen = el.classList.contains('open');
+      document.querySelectorAll('.script-item').forEach(s => s.classList.remove('open'));
+      if (!isOpen) el.classList.add('open');
+    }
+    // Activate tab on scroll
+    const sections = ['links','scripts','objections'];
+    const tabs = document.querySelectorAll('.tab-item');
+    window.addEventListener('scroll', () => {
+      let current = 'links';
+      sections.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && window.scrollY >= el.offsetTop - 140) current = id;
+      });
+      tabs.forEach(t => {
+        t.classList.toggle('active', t.getAttribute('href') === '#' + current);
+      });
+    });
+  </script>
+</body>
+</html>
