@@ -15,7 +15,7 @@
       --text: #4b4b4b;
       --muted: #888;
       --border: #e0e0e0;
-      --surface: #f8f8f8;
+      --surface: #fff;
       --nav-h: 60px;
       --green: #2a7a3b;
       --red: #c0392b;
@@ -450,6 +450,63 @@
       line-height: 1.4;
     }
 
+    /* ── B2B ORDERS ── */
+    .b2b-row {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      border: 1px solid var(--border);
+      margin-bottom: 2.5rem;
+      animation: riseIn 0.5s 0.18s ease both;
+    }
+    .b2b-panel {
+      padding: 1.75rem;
+      border-right: 1px solid var(--border);
+    }
+    .b2b-panel:last-child { border-right: none; }
+    .b2b-totals {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      margin-bottom: 1.25rem;
+    }
+    .b2b-total-cell {
+      padding: 0.85rem 0;
+      border-right: 1px solid var(--border);
+      text-align: center;
+    }
+    .b2b-total-cell:last-child { border-right: none; }
+    .b2b-total-value {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2rem; font-weight: 800;
+      color: var(--black); line-height: 1;
+    }
+    .b2b-total-label {
+      font-size: 0.62rem; font-weight: 700;
+      letter-spacing: 0.13em; text-transform: uppercase;
+      color: var(--muted); margin-top: 0.2rem;
+    }
+    .rep-breakdown-list { margin-top: 0.5rem; }
+    .rep-breakdown-row {
+      display: grid;
+      grid-template-columns: 80px 1fr 36px;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .rep-breakdown-row:last-child { border-bottom: none; }
+    .rep-breakdown-name {
+      font-size: 0.8rem; font-weight: 600; color: var(--black);
+    }
+    .rep-breakdown-track {
+      height: 5px; background: var(--border);
+    }
+    .rep-breakdown-fill { height: 100%; background: var(--black); }
+    .rep-breakdown-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      color: var(--black); text-align: right;
+    }
+
     /* ── NEW PARTNER DASHBOARD ── */
     .new-partner-row {
       display: grid;
@@ -700,6 +757,77 @@
       <div class="kpi-value">68<span style="font-size:1.4rem">%</span></div>
       <div class="kpi-sub">reorder within 90 days</div>
     </div>
+  </div>
+
+  <!-- B2B ORDERS -->
+  <div class="section-label">B2B Orders</div>
+  <div class="b2b-row">
+
+    <!-- LEFT: TOTALS + BAR CHART BY LOCATION -->
+    <div class="b2b-panel">
+      <div class="chart-title">Orders by Location — 2026</div>
+      <div class="b2b-totals">
+        <div class="b2b-total-cell">
+          <div class="b2b-total-value">47</div>
+          <div class="b2b-total-label">This Month</div>
+        </div>
+        <div class="b2b-total-cell">
+          <div class="b2b-total-value">142</div>
+          <div class="b2b-total-label">2026 YTD</div>
+        </div>
+        <div class="b2b-total-cell">
+          <div class="b2b-total-value">+18%</div>
+          <div class="b2b-total-label">vs 2025 YTD</div>
+        </div>
+      </div>
+      <div class="chart-wrap" style="height:200px">
+        <canvas id="b2bLocationChart"></canvas>
+      </div>
+    </div>
+
+    <!-- RIGHT: ORDERS BY REP -->
+    <div class="b2b-panel">
+      <div class="chart-title">Orders by Rep — March 2026</div>
+      <div class="rep-breakdown-list">
+        <div class="rep-breakdown-row">
+          <span class="rep-breakdown-name">Carla Harvey</span>
+          <div class="rep-breakdown-track"><div class="rep-breakdown-fill" style="width:100%"></div></div>
+          <span class="rep-breakdown-num">22</span>
+        </div>
+        <div class="rep-breakdown-row">
+          <span class="rep-breakdown-name">Kelly Ash</span>
+          <div class="rep-breakdown-track"><div class="rep-breakdown-fill" style="width:68%"></div></div>
+          <span class="rep-breakdown-num">15</span>
+        </div>
+        <div class="rep-breakdown-row">
+          <span class="rep-breakdown-name">Chad</span>
+          <div class="rep-breakdown-track"><div class="rep-breakdown-fill" style="width:45%"></div></div>
+          <span class="rep-breakdown-num">10</span>
+        </div>
+      </div>
+
+      <div style="margin-top:1.5rem">
+        <div class="chart-title" style="margin-bottom:0.75rem">Orders by Rep — 2026 YTD</div>
+        <div class="rep-breakdown-list">
+          <div class="rep-breakdown-row">
+            <span class="rep-breakdown-name">Carla Harvey</span>
+            <div class="rep-breakdown-track"><div class="rep-breakdown-fill" style="width:100%"></div></div>
+            <span class="rep-breakdown-num">64</span>
+          </div>
+          <div class="rep-breakdown-row">
+            <span class="rep-breakdown-name">Kelly Ash</span>
+            <div class="rep-breakdown-track"><div class="rep-breakdown-fill" style="width:70%"></div></div>
+            <span class="rep-breakdown-num">45</span>
+          </div>
+          <div class="rep-breakdown-row">
+            <span class="rep-breakdown-name">Chad</span>
+            <div class="rep-breakdown-track"><div class="rep-breakdown-fill" style="width:52%"></div></div>
+            <span class="rep-breakdown-num">33</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- NEW PARTNER DASHBOARD -->
@@ -1049,6 +1177,61 @@
 </main>
 
 <script>
+  // ── B2B ORDERS BY LOCATION BAR CHART ──
+  const b2bLocCtx = document.getElementById('b2bLocationChart').getContext('2d');
+  new Chart(b2bLocCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Northeast', 'Southeast', 'Midwest', 'Southwest', 'West', 'Pacific'],
+      datasets: [
+        {
+          label: 'This Month',
+          data: [10, 8, 12, 6, 7, 4],
+          backgroundColor: '#000000',
+          borderWidth: 0,
+        },
+        {
+          label: '2026 YTD',
+          data: [28, 24, 38, 18, 21, 13],
+          backgroundColor: '#d5d5d5',
+          borderWidth: 0,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top', align: 'end',
+          labels: {
+            font: { family: "'Barlow', sans-serif", size: 11, weight: '600' },
+            color: '#4b4b4b', boxWidth: 10, boxHeight: 10, padding: 12,
+          }
+        },
+        tooltip: {
+          backgroundColor: '#000',
+          titleFont: { family: "'Barlow Condensed', sans-serif", size: 13, weight: '700' },
+          bodyFont: { family: "'Barlow', sans-serif", size: 12 },
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font: { family: "'Barlow', sans-serif", size: 10 }, color: '#888' },
+          border: { color: '#e0e0e0' }
+        },
+        y: {
+          grid: { color: '#f0f0f0' },
+          ticks: { font: { family: "'Barlow', sans-serif", size: 11 }, color: '#888' },
+          border: { dash: [3,3], color: 'transparent' }
+        }
+      },
+      barPercentage: 0.6,
+      categoryPercentage: 0.7,
+    }
+  });
+
   // ── CLOSED DEALS BY MONTH BAR CHART ──
   const closedDealsCtx = document.getElementById('closedDealsChart').getContext('2d');
   new Chart(closedDealsCtx, {
