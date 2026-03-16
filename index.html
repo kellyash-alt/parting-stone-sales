@@ -44,7 +44,8 @@
       position: sticky;
       top: 0;
       z-index: 200;
-      background: var(--black);
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
     }
     .site-nav {
       max-width: 1280px;
@@ -66,17 +67,18 @@
       font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: #555;
-      border-left: 1px solid #1c1c1c;
+      color: #000;
+      border-left: 1px solid #e0e0e0;
       transition: color 0.12s, background 0.12s;
     }
-    .nav-links li:last-child a { border-right: 1px solid #1c1c1c; }
-    .nav-links a:hover { color: var(--white); background: #141414; }
-    .nav-links a.active { color: var(--white); }
+    .nav-links li:last-child a { border-right: 1px solid #e0e0e0; }
+    .nav-links a:hover { color: #000; background: #f0f0f0; }
+    .nav-links a.active { color: #000; font-weight: 700; }
 
     /* ── HERO ── */
     .hero {
-      background: var(--black);
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
       background-image: repeating-linear-gradient(
         0deg, transparent, transparent 47px,
         rgba(255,255,255,0.022) 47px, rgba(255,255,255,0.022) 48px
@@ -149,7 +151,7 @@
     .hero-sub {
       font-size: 0.9rem;
       font-weight: 300;
-      color: #555;
+      color: #000;
       line-height: 1.75;
       margin-bottom: 2.25rem;
     }
@@ -179,9 +181,10 @@
       color: #444;
       border-color: #2a2a2a;
     }
-    .btn-ghost-hero:hover { color: var(--white); border-color: #555; }
+    .btn-ghost-hero:hover { color: var(--white); border-color: #000; }
     .btn-black {
-      background: var(--black);
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
       color: var(--white);
       border-color: var(--black);
     }
@@ -252,7 +255,8 @@
       position: absolute;
       bottom: 0; left: 0; right: 0;
       height: 2px;
-      background: var(--black);
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
       transform: scaleX(0);
       transform-origin: left;
       transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
@@ -331,7 +335,8 @@
 
     /* ── MISSION ── */
     .mission {
-      background: var(--black);
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
       background-image: repeating-linear-gradient(
         0deg, transparent, transparent 47px,
         rgba(255,255,255,0.02) 47px, rgba(255,255,255,0.02) 48px
@@ -367,7 +372,8 @@
 
     /* ── FOOTER ── */
     footer {
-      background: var(--black);
+      background: #fff;
+      border-bottom: 1px solid #e0e0e0;
       border-top: 1px solid #141414;
       padding: 1.5rem 2rem;
     }
