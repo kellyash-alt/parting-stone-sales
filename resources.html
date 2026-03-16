@@ -43,8 +43,7 @@
       position: sticky;
       top: 0;
       z-index: 200;
-      background: #fff;
-      border-bottom: 1px solid #e0e0e0;
+      background: var(--black);
     }
     .site-nav {
       max-width: 1280px;
@@ -66,18 +65,17 @@
       font-weight: 600;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: #000;
-      border-left: 1px solid #e0e0e0;
+      color: #555;
+      border-left: 1px solid #1c1c1c;
       transition: color 0.12s, background 0.12s;
     }
-    .nav-links li:last-child a { border-right: 1px solid #e0e0e0; }
-    .nav-links a:hover { color: #000; background: #f0f0f0; }
-    .nav-links a.active { color: #000; font-weight: 700; }
+    .nav-links li:last-child a { border-right: 1px solid #1c1c1c; }
+    .nav-links a:hover { color: var(--white); background: #141414; }
+    .nav-links a.active { color: var(--white); }
 
     /* ── PAGE HEADER ── */
     .page-header {
-      background: #fff;
-      border-bottom: 1px solid #e0e0e0;
+      background: var(--black);
       background-image: repeating-linear-gradient(
         0deg, transparent, transparent 47px,
         rgba(255,255,255,0.022) 47px, rgba(255,255,255,0.022) 48px
@@ -198,8 +196,7 @@
       position: absolute;
       left: 0; top: 0; bottom: 0;
       width: 2px;
-      background: #fff;
-      border-bottom: 1px solid #e0e0e0;
+      background: var(--black);
       transform: scaleY(0);
       transform-origin: top;
       transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
@@ -319,8 +316,7 @@
       font-size: 0.875rem;
     }
     .obj-table thead tr {
-      background: #fff;
-      border-bottom: 1px solid #e0e0e0;
+      background: var(--black);
     }
     .obj-table th {
       padding: 1rem 1.5rem;
@@ -329,7 +325,7 @@
       font-weight: 600;
       letter-spacing: 0.18em;
       text-transform: uppercase;
-      color: #000;
+      color: #555;
       font-family: 'Barlow', sans-serif;
     }
     .obj-table td {
@@ -353,8 +349,7 @@
 
     /* ── FOOTER ── */
     footer {
-      background: #fff;
-      border-bottom: 1px solid #e0e0e0;
+      background: var(--black);
       border-top: 1px solid #141414;
       padding: 1.5rem 2rem;
     }
@@ -393,8 +388,8 @@
 
   <header class="site-header">
     <nav class="site-nav">
-      <a class="nav-logo" href="index.html">
-        <img src="Parting-Stone-logo-solidified-remains-landscape.png" alt="Parting Stone" style="height:40px;">
+      <a href="index.html" style="background:#ffffff; padding:6px 12px; border-radius:4px; display:inline-flex; align-items:center;">
+        <img src="Parting-Stone-logo-solidified-remains-landscape.png" alt="Parting Stone" style="height:32px;">
       </a>
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>

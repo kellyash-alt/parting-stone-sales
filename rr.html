@@ -47,8 +47,7 @@
     /* ── NAV ── */
     .site-header {
       position: sticky; top: 0; z-index: 200;
-      background: #fff;
-      border-bottom: 1px solid #e0e0e0;
+      background: var(--black);
     }
     .site-nav {
       max-width: 1280px; margin: 0 auto;
@@ -66,14 +65,13 @@
       color: #000; border-left: 1px solid #e0e0e0;
       transition: color 0.12s, background 0.12s;
     }
-    .nav-links li:last-child a { border-right: 1px solid #e0e0e0; }
-    .nav-links a:hover { color: #000; background: #f0f0f0; }
-    .nav-links a.active { color: #000; font-weight: 700; }
+    .nav-links li:last-child a { border-right: 1px solid #1c1c1c; }
+    .nav-links a:hover { color: var(--white); background: #141414; }
+    .nav-links a.active { color: var(--white); }
 
     /* ── PAGE HEADER ── */
     .page-header {
-      background: #fff;
-      border-bottom: 1px solid #e0e0e0;
+      background: var(--black);
       background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, #1a1a1a 39px, #1a1a1a 40px);
       border-bottom: 1px solid #222;
       padding: 2.5rem 2rem;
@@ -119,8 +117,7 @@
     .section-block-header {
       padding: 1.1rem 1.5rem;
       border-bottom: 1px solid var(--border);
-      background: #fff;
-      border-bottom: 1px solid #e0e0e0;
+      background: var(--black);
       display: flex; align-items: baseline; gap: 1rem;
       justify-content: space-between;
     }
@@ -386,8 +383,8 @@
 <!-- NAV -->
 <header class="site-header">
   <nav class="site-nav">
-    <a class="nav-logo" href="index.html">
-      <img src="Parting-Stone-logo-solidified-remains-landscape.png" alt="Parting Stone" style="height:40px;">
+    <a href="index.html" style="background:#ffffff; padding:6px 12px; border-radius:4px; display:inline-flex; align-items:center;">
+      <img src="Parting-Stone-logo-solidified-remains-landscape.png" alt="Parting Stone" style="height:32px;">
     </a>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
